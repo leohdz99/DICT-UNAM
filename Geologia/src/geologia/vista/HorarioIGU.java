@@ -117,12 +117,12 @@ public class HorarioIGU extends JInternalFrame {
                 
                 pnDatos.add(lbProfesor);
                 jcNombreProf.setModel(new DefaultComboBoxModel(new String[] {}));
-                llenarJcNombreProf();
+                //llenarJcNombreProf();
                 pnDatos.add(jcNombreProf);
 		
                 pnDatos.add(lbSalon);
                 jcSalon.setModel(new DefaultComboBoxModel(new String[] {}));
-                llenarJcSalon();
+                //llenarJcSalon();
                 pnDatos.add(jcSalon);
                 
 		pnDatos.add(lbHoraE);						
@@ -194,7 +194,7 @@ public class HorarioIGU extends JInternalFrame {
 	public void setTabla() {
 		
 		String titulos[] = {"Horario", "Grupo","Tipo","Salon","Cupo","Vacante","Dia 1","Dia 2","Dia 3","Clave", "Asignatura", "Folio Profesor","Profesor"  };				//títulos de la tabla
-		Object datos[][] = HorarioDAO.obtenerHorarios("","", "", semestre);					//obtiene todos los datos de la base de datos
+		Object datos[][] = null;//HorarioDAO.obtenerHorarios("","", "", semestre);					//obtiene todos los datos de la base de datos
 
 		final DefaultTableModel modeloTabla = new DefaultTableModel(){	//crea modelo de tabla
 			
