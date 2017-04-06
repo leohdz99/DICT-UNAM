@@ -32,12 +32,11 @@ public class HorarioIGU extends JInternalFrame {
 	//campos de texto
 	
     
-        private JComboBox jcTipo = new JComboBox();
         private JComboBox jcSalon = new JComboBox();
         private JComboBox jcAsignatura = new JComboBox();
         private JTextField txtGrupo = new JTextField();
-        private JTextField txtHoraE = new JTextField(10);	
-	private JTextField txtHoraS = new JTextField(10);
+        private JComboBox jcHoraE = new JComboBox();	
+	private JComboBox jcHoraS = new JComboBox();
         private JComboBox jcNombreProf = new JComboBox();
         private Checkbox chkLunes = new Checkbox("Lunes");
         private Checkbox chkMartes = new Checkbox("Martes");
@@ -105,13 +104,7 @@ public class HorarioIGU extends JInternalFrame {
                 llenarJcAsignatura();
                 pnDatos.add(jcAsignatura);
                 
-                pnDatos.add(lbTipo);
-                String tipoAsig[] = {"", "T", "P", "C"};
-                for(int i = 0; i < tipoAsig.length ; i++){
-                    jcTipo.addItem(tipoAsig[i]);
-                }
-                pnDatos.add(jcTipo);
-             
+
                 pnDatos.add(lbGrupo);             
                 pnDatos.add(txtGrupo);
                 
@@ -126,10 +119,10 @@ public class HorarioIGU extends JInternalFrame {
                 pnDatos.add(jcSalon);
                 
 		pnDatos.add(lbHoraE);						
-		pnDatos.add(txtHoraE);
+		pnDatos.add(jcHoraE);
 
 		pnDatos.add(lbHoraS);	
-                pnDatos.add(txtHoraS);
+                pnDatos.add(jcHoraS);
                 
                 JPanel pnDias = new JPanel();
                 pnDias.setLayout(new GridLayout(1,0));
@@ -306,10 +299,6 @@ public class HorarioIGU extends JInternalFrame {
         jcb.setSelectedIndex(6);
     }
 
-    public JComboBox getJcTipo() {
-        return jcTipo;
-    }
-
     public JComboBox getJcSalon() {
         return jcSalon;
     }
@@ -320,14 +309,6 @@ public class HorarioIGU extends JInternalFrame {
 
     public JTextField getTxtGrupo() {
         return txtGrupo;
-    }
-
-    public JTextField getTxtHoraE() {
-        return txtHoraE;
-    }
-
-    public JTextField getTxtHoraS() {
-        return txtHoraS;
     }
 
     public JComboBox getJcNombreProf() {
@@ -356,10 +337,7 @@ public class HorarioIGU extends JInternalFrame {
         jcAsignatura.setSelectedIndex(0);
         jcSalon.setSelectedIndex(0);
         jcNombreProf.setSelectedIndex(0);
-        jcTipo.setSelectedIndex(0);
         txtGrupo.setText("");
-        txtHoraE.setText("");
-        txtHoraS.setText("");
     }
     
     
