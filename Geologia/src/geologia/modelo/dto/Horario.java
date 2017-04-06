@@ -22,27 +22,21 @@ public class Horario {
         
     private int idHorario;
     private String grupo;
-    private float horaEntrada;
-    private float horaSalida;
     private int idSalon;
     private int idProfesor;
-    private int dias;
+
     
     
 
     public Horario() {
     }
     
-    public Horario(int idHorario, String grupo, float horaEntrada, float horaSalida, int idSalon,
-            int idProfesor, int dias ) {
+    public Horario(int idHorario, String grupo, int idSalon, int idProfesor ) {
         
         this.idHorario = idHorario;
         this.grupo = grupo;
-        this.horaEntrada = horaEntrada;
-        this.horaSalida = horaSalida;
         this.idSalon = idSalon;
         this.idProfesor = idProfesor;
-        this.dias = dias;
       
     }
 
@@ -61,26 +55,6 @@ public class Horario {
     public void setGrupo(String grupo) {
         this.grupo = grupo;
     }
-
-    public float getHoraSalida(){
-        
-        return horaSalida;
-    }
-
-    public float getHoraEnrtada() {
-       
-       return horaEntrada;
-       
-    }
-
-    public void setHoraSalida(float horaSalida) {
-        this.horaSalida = horaSalida;
-    }
-
-    public void setHoraEntrada(float horaEntrada) {
-        this.horaEntrada = horaEntrada;
-    }
-
     public int getIdSalon() {
         return idSalon;
     }
@@ -97,23 +71,12 @@ public class Horario {
         this.idProfesor = idProfesor;
     } 
 
-
-     public int getDias() {
-        return dias;
-    }   
-
-    public void setDias(int dias) {
-        this.dias = dias;
-    }
-
      public String toString(){
         return "idHorario: " + idHorario +
                 ", grupo: '" + grupo + '\'' +
-                ", horaEntrada: '" + horaEntrada + '\'' +
-                ", horaSalida: '" + horaSalida + '\'' + 
                 ", idSalon: " + idSalon + '\''+
-                ", idProfesor: '" + idProfesor + '\'' +
-                ", dias3: '" + dias;
+                ", idProfesor: '" + idProfesor;
+                
                            
     }
     
@@ -127,9 +90,7 @@ public class Horario {
             }else{
                 Horario horario = (Horario) elemento;
                 if (idHorario == horario.idHorario && grupo.equals(horario.grupo) && 
-                    horaEntrada == horario.horaEntrada && horaSalida == horario.horaSalida &&
-                    idSalon == horario.idSalon && 
-                    horario.idProfesor == idProfesor && dias == horario.dias){
+                    idSalon == horario.idSalon && horario.idProfesor == idProfesor){
                     return  true;
                 }else{
                     return false;

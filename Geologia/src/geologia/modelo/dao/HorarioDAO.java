@@ -41,28 +41,14 @@ public class HorarioDAO{
                     
                         conexion = ConexionBD.getConexion();
 			
-                       
-                        
-                       
-				
-			//INT = NUMERIC??
-			//CHAR y VATCHAR = STIRNG??
-                        
-                        query = "INSERT INTO Horario(semestre,tipo,grupo,horaEntrada,horaSalida,idAsignatura,idSalon,idProfesor,Dia1,Dia2,Dia3) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+              
+			query = "INSERT INTO Horario(grupo,idSalon,idProfesor) VALUES (?, ?, ?);";
                         sentencia = conexion.prepareStatement(query);
-
                         
-			sentencia.setString(1,horario.getSemestre());
-			sentencia.setString(2,horario.getTipo());
-			sentencia.setString(3,horario.getGrupo());
-			sentencia.setTime(4,horario.getHoraEnrtada());
-			sentencia.setTime(5,horario.getHoraSalida());
-			sentencia.setInt(6,horario.getIdAsignatura());
-			sentencia.setInt(7,horario.getIdSalon());
-			sentencia.setInt(8,horario.getIdProfesor());
-			sentencia.setInt(9,7);
-			sentencia.setInt(10,7);
-			sentencia.setInt(11,7);
+			sentencia.setString(1,horario.getGrupo());
+        		sentencia.setInt(2,horario.getIdSalon());
+			sentencia.setInt(3,horario.getIdProfesor());
+			
 			
 
 			constraint = sentencia.executeUpdate();
