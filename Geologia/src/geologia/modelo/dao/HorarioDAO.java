@@ -42,12 +42,13 @@ public class HorarioDAO{
                         conexion = ConexionBD.getConexion();
 			
               
-			query = "INSERT INTO Horario(grupo,idSalon,idProfesor) VALUES (?, ?, ?);";
+			query = "INSERT INTO Horario(idHorario,grupo,idSalon,idProfesor) VALUES (?, ?, ?, ?);";
                         sentencia = conexion.prepareStatement(query);
                         
-			sentencia.setString(1,horario.getGrupo());
-        		sentencia.setInt(2,horario.getIdSalon());
-			sentencia.setInt(3,horario.getIdProfesor());
+                        sentencia.setInt(1,horario.getIdHorario());
+			sentencia.setString(2,horario.getGrupo());
+        		sentencia.setInt(3,horario.getIdSalon());
+			sentencia.setInt(4,horario.getIdProfesor());
 			
 			
 
@@ -68,7 +69,7 @@ public class HorarioDAO{
 				ConexionBD.cerrarConexion();
 			}
 
-		}catch(SQLException e){ //por qué "e"??
+		}catch(SQLException e){
 			JOptionPane.showMessageDialog(null, "Error, no se puede Insertar los Horarios: " + e.getMessage(),
 				"ERROR", JOptionPane.ERROR_MESSAGE);
                         e.printStackTrace();
@@ -88,23 +89,14 @@ public class HorarioDAO{
 			conexion = ConexionBD.getConexion();
 			sentencia = conexion.prepareStatement(
 				"UPDATE Horario " + 
-				"SET semestre = ?, tipo = ?, grupo = ?, "
-                                        + "horaEntrada = ?, horaSalida = ?, idAsignatura = ?, idSalon = ?, idProfesor = ?, "
-                                        + "Dia1 = ?, Dia2 = ?, Dia3 = ?" + 
-				"WHERE idHorario = ?");
+				"SET grupo = ?, idSalon = ?, idProfesor = ?, " +
+                                "WHERE idHorario = ?");
 
 			sentencia.setInt(1,horario.getIdHorario());
-			sentencia.setString(2,horario.getSemestre());
-			sentencia.setString(3,horario.getTipo());
-			sentencia.setString(4,horario.getGrupo());
-			sentencia.setTime(5,horario.getHoraEnrtada());
-			sentencia.setTime(6,horario.getHoraSalida());
-			sentencia.setInt(7,horario.getIdAsignatura());
-			sentencia.setInt(8,horario.getIdSalon());
-			sentencia.setInt(9,horario.getIdProfesor());
-			sentencia.setInt(10,7);
-			sentencia.setInt(11,7);
-			sentencia.setInt(12,7);
+			sentencia.setString(2,horario.getGrupo());
+			sentencia.setInt(3,horario.getIdSalon());
+			sentencia.setInt(4,horario.getIdProfesor());
+			
 
 			constraint = sentencia.executeUpdate();
 
@@ -121,10 +113,10 @@ public class HorarioDAO{
 		}finally {
 			ConexionBD.cerrarConexion();
 		}
-		return access; //return ok; 
+		return access; 
 	}
  //*************CONSULTAR****************
-	public static Object[][] obtenerHorarios(String nombreProf, String materia, String salon, String semestre){
+	public static Object[][] obtenerHorarios(String nombreProf, String salon){
 		
                 Object horarios[][] = null;
 		int totalTuplas = 0;
@@ -136,17 +128,12 @@ public class HorarioDAO{
                         
                         
 			query = "SELECT Count(*)\n" +
-                                "FROM Horario\n" +
-                                "Inner JOIN Asignatura ON Horario.idAsignatura = Asignatura.idAsignatura\n" +
+                                "FROM Horario\n" +                                
                                 "INNER JOIN Profesor ON Horario.idProfesor = Profesor.idProfesor\n" +
-                                "INNER JOIN Dias D1 ON Horario.Dia1 = D1.idDias\n" +
-                                "INNER JOIN Dias D2 ON Horario.Dia2 = D2.idDias\n" +
-                                "INNER JOIN Dias D3 ON Horario.Dia3 = D3.idDias\n" +
-                                 "INNER JOIN salon ON horario.idSalon = salon.idSalon\n"+
+                                "INNER JOIN salon ON horario.idSalon = salon.idSalon\n"+
                                 "where concat(tituloProfesor,' ',nombreProfesor,' ',apellidoPaternoProfesor,' ',apellidoMaternoProfesor) like '%"+nombreProf+"%'\n"+
-                                "AND salon like '%"+salon+"%'\n"+
-                                "AND semestre like '%"+semestre+"%'\n"+
-                                "AND nombreAsignatura like '%"+materia+"%';";
+                                "AND salon like '%"+salon+"%';";
+                        
 			vista = orden.executeQuery(query);
 
 			vista.next();
@@ -154,8 +141,8 @@ public class HorarioDAO{
 
 			horarios = new Object[totalTuplas][13];
                         
-                        query = "SELECT concat(Horario.horaEntrada, ' - ', Horario.horaSalida) as Horario, Horario.grupo as Grupo, Horario.tipo as Tipo, salon.salon as Salon, salon.cupoSalon as Cupo, salon.vacanteSalon as Vacante,\n"+ 
-                                "D1.dias AS 'Dia 1', D2.dias AS 'Dia 2' , D3.dias AS 'Dia 3', Asignatura.claveAsignatura as Clave, Asignatura.nombreAsignatura as Asignatura, Profesor.folioProfesor as 'Folio Profesor',\n"+
+                        query = "SELECT  Horario.grupo as Grupo, salon.salon as Salon, salon.cupoSalon as Cupo, salon.vacanteSalon as Vacante,\n"+ 
+                                "Profesor.folioProfesor as 'Folio Profesor',\n"+
                                 "concat(Profesor.tituloProfesor,' ',Profesor.nombreProfesor,' ',Profesor.apellidoPaternoProfesor,' ', Profesor.apellidoMaternoProfesor) as Profesor\n"+
                                 "FROM Horario\n"+
                                 "Inner JOIN Asignatura ON Horario.idAsignatura = Asignatura.idAsignatura \n"+
@@ -166,12 +153,10 @@ public class HorarioDAO{
                                 "INNER JOIN salon ON horario.idSalon = salon.idSalon\n"+
                                 "WHERE concat(tituloProfesor,' ',nombreProfesor,' ',apellidoPaternoProfesor,' ',apellidoMaternoProfesor) like '%"+nombreProf+"%'\n"+
                                 "AND salon like '%"+salon+"%'\n"+
-                                "AND nombreAsignatura like '%"+materia+"%'\n"+
-                                "AND semestre like '%"+semestre+"%'\n"+
                                 "ORDER BY Dia1, asignatura, horaEntrada, grupo, salon;";
                         vista = orden.executeQuery(query);
 			int pos = 0;
-                        
+                        //concat(Horario.horaEntrada, ' - ', Horario.horaSalida)
                             
 			//segun yo, aqui se debe de acomodar a como quieren que salga en iReport D: pero no sale
 			while (vista.next()){
@@ -181,9 +166,7 @@ public class HorarioDAO{
 				horarios[pos][3] = vista.getString("Salon");
 				horarios[pos][4] = vista.getString("Cupo");
 				horarios[pos][5] = vista.getString("Vacante");
-				horarios[pos][6] = vista.getString("Dia 1");
-				horarios[pos][7] = vista.getString("Dia 2");
-				horarios[pos][8] = vista.getString("Dia 3"); 
+				horarios[pos][6] = vista.getString("Dias");
 				horarios[pos][9] = vista.getString("Clave");
 				horarios[pos][10] = vista.getString("Asignatura");
 				horarios[pos][11] = vista.getString("Folio Profesor");
@@ -309,8 +292,8 @@ public class HorarioDAO{
                 
                 
                 sentencia.setInt(1, hr.getIdSalon());
-                sentencia.setString(2, hr.getTipo());
-                sentencia.setInt(3, hr.getIdAsignatura());
+                //sentencia.setString(2, hr.getTipo());
+                //sentencia.setInt(3, hr.getIdAsignatura());
                 
                 
                 
