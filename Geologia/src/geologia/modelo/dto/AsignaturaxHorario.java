@@ -24,7 +24,7 @@ public class AsignaturaxHorario {
     
     private int idAsignatura;
     private int idHorario;
-    private int semestre;
+    private String semestre;
     
 
 
@@ -32,7 +32,7 @@ public class AsignaturaxHorario {
 
     }
 
-    public AsignaturaxHorario(int idAsignatura, int idHorario, int semestre){
+    public AsignaturaxHorario(int idAsignatura, int idHorario, String semestre){
         
         this.idAsignatura = idAsignatura;
         this.idHorario = idHorario;
@@ -60,14 +60,41 @@ public class AsignaturaxHorario {
         this.idHorario = idHorario;
     }
     
-    public int getSemestre(){
+    public String getSemestre(){
         
         return semestre;
     }
     
-    public void setSemestre(int semestre){
+    public void setSemestre(String semestre){
         
         this.semestre = semestre;
+    }
+    
+     @Override
+    public String toString() {
+        return  "idAsignatura: " + idAsignatura +            
+                ", idHorario: '" + idHorario + '\'' +
+                ", semestre: " + semestre;
+    }
+    
+    @Override
+    public boolean equals(Object elemento) {
+        if(elemento == null){
+            return  false;
+        }else{
+            if (!(elemento instanceof AsignaturaxHorario)){
+                return  false;
+            }else{
+                AsignaturaxHorario asignaturaxH = (AsignaturaxHorario) elemento;
+                if (idAsignatura == asignaturaxH.idAsignatura &&
+                        idHorario == asignaturaxH.idHorario && 
+                                semestre.equals(asignaturaxH.semestre)){
+                    return  true;
+                }else{
+                    return false;
+                }
+            }
+        }
     }
 
     

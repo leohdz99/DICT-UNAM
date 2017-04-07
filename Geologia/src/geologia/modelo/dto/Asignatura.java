@@ -17,17 +17,19 @@ public class Asignatura {
     private int idAsignatura;
     private int claveAsignatura;
     private String nombreAsignatura;
+    private float horasSem;
 
 
     public Asignatura(){
         
     }
     public Asignatura(int idAsignatura, int claveAsignatura, 
-                     String nombreAsignatura){
+                     String nombreAsignatura, float horasSem){
         
         this.idAsignatura = idAsignatura;
         this.claveAsignatura = claveAsignatura;
         this.nombreAsignatura = nombreAsignatura;
+        this.horasSem = horasSem;
         
         
     }
@@ -57,13 +59,23 @@ public class Asignatura {
     public void setNombreAsignatura(String nombreAsignatura) {
         this.nombreAsignatura = nombreAsignatura;
     }
+    
+    public float getHorasSem(){
         
+        return horasSem;
+    }
+    
+    public void setHorasSem(float horasSem){
+        
+        this.horasSem = horasSem;
+    }
     
     @Override
     public String toString() {
         return  "idAsignatura: " + idAsignatura +            
                 ", claveAsignatura: '" + claveAsignatura + '\'' +
-                ", nombreAsignatura: " + nombreAsignatura;
+                ", nombreAsignatura: " + nombreAsignatura + '\'' +
+                ", horasSem: " + horasSem;
     }
     
     @Override
@@ -77,7 +89,8 @@ public class Asignatura {
                 Asignatura asignatura = (Asignatura) elemento;
                 if (idAsignatura == asignatura.idAsignatura &&
                         claveAsignatura == asignatura.claveAsignatura && 
-                        nombreAsignatura.equals(asignatura.nombreAsignatura)){
+                        nombreAsignatura.equals(asignatura.nombreAsignatura) &&
+                                horasSem == asignatura.horasSem){
                     return  true;
                 }else{
                     return false;
