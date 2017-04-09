@@ -73,10 +73,54 @@ INSERT INTO horariocomp
 VALUES(6, 15.00, 16.50,6);
 
 
+
 (select * from horario 
 	left outer join 
-	horarioReal on horario.idHorario = horarioReal.idHorario
-	left outer join 
+	horarioReal on horario.idHorario = horarioReal.idHorario)
+    union
+	(select * from horario 
+    left outer join 
     horarioComp on horario.idHorario = horarioComp.idHorario
 	order by grupo);
 
+
+select horario.idHorario, claveAsig as clave, nombreAsig as asignatura, grupo, salon,  Profesor.folio as folio,
+       concat(Profesor.titulo,' ',Profesor.nombre,' ',Profesor.apPatern,' ',Profesor.apMatern) as profesor,
+       concat(horaEntrada,' - ',horaSalida) as horario, dias
+from asignaturaxhorario
+	left outer join 
+	asignatura on asignaturaxhorario.idAsignatura = asignatura.idAsignatura
+    left outer join
+    horario on asignaturaxhorario.idHorario = horario.idHorario
+	left outer join
+    profesor on profesor.idProfesor = horario.idHorario
+    left outer join
+    salon on salon.idSalon = horario.idSalon
+	left outer join
+    horarioreal on horario.idHorario = horarioreal.idHorario
+    where dias like '%%' 
+union
+select horario.idHorario, claveAsig as clave, nombreAsig as asignatura, grupo, salon,  Profesor.folio as folio,
+       concat(Profesor.titulo,' ',Profesor.nombre,' ',Profesor.apPatern,' ',Profesor.apMatern) as profesor,
+       concat(horaEntrada,' - ',horaSalida) as horario, dias
+from asignaturaxhorario
+	left outer join 
+	asignatura on asignaturaxhorario.idAsignatura = asignatura.idAsignatura
+    left outer join
+    horario on asignaturaxhorario.idHorario = horario.idHorario
+	left outer join
+    profesor on profesor.idProfesor = horario.idHorario
+    left outer join
+    salon on salon.idSalon = horario.idSalon
+	right outer join
+    horariocomp on horario.idHorario = horariocomp.idHorario
+where dias like '%%' /*para Buscar Dias repetidos, hay que verificar la parte de los traslapes*/
+order by asignatura;
+
+    
+    
+    
+    
+    
+    
+    
