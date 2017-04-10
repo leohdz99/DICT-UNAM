@@ -96,7 +96,7 @@ public class MenuPrincipalIGU extends JFrame{	//Frame principal
 			private Image imagen; 
 			{
 			    try {
-			    	URL imagePath = new URL(getClass().getResource("imagenes/division.png").toString());
+			    	URL imagePath = new URL(getClass().getResource("imagenes/puma1.png").toString());
 			        imagen = ImageIO.read(imagePath);
 			    } catch (IOException e) {
 			        e.printStackTrace();
