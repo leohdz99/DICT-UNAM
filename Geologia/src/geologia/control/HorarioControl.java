@@ -24,7 +24,10 @@ import geologia.modelo.dao.AsignaturaDAO;
 import geologia.modelo.dao.HorarioDAO;
 import geologia.modelo.dao.ProfesorDAO;
 import geologia.modelo.dao.SalonDAO;
+import geologia.modelo.dao.HorarioRealDAO;
+import geologia.modelo.dao.HorarioCompDAO;
 import geologia.modelo.dto.Horario;
+import geologia.modelo.dto.HorarioReal;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import geologia.vista.HorarioIGU;
@@ -60,8 +63,7 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
         
         private Pattern patron;
         private Matcher igual;
-        private final String FORMATO_HORA = "^([0-9]|0[0-9]|1[0-9]|2[0-3])"+
-                                            ":[0-5][0-9]$";
+        private final String FORMATO_HORA = "[0-2][0-9][.][0-5][0-9]";
         
         @Override
         public boolean validarHora(String hora) {
@@ -167,10 +169,6 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
             JOptionPane.showMessageDialog(null, "Falta salon", 
                     "advertencia", JOptionPane.ERROR_MESSAGE);
             ventana.getJcSalon().requestFocus();
-        }else if(!validador.vaildarComboBox(ventana.getJcTipo())) {
-            JOptionPane.showMessageDialog(null, "Falta tipo", 
-                    "advertencia", JOptionPane.ERROR_MESSAGE);
-            ventana.getJcTipo().requestFocus();
         } else if (!validador.validarGrupo(ventana.getTxtGrupo().getText())){
              JOptionPane.showMessageDialog(null, "Error en alguno de los campos", 
                     "advertencia", JOptionPane.ERROR_MESSAGE);

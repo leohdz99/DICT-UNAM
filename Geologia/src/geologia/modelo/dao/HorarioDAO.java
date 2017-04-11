@@ -127,12 +127,15 @@ public class HorarioDAO{
 			orden = conexion.createStatement();
                         
                         
-			query = "SELECT Count(*)\n" +
-                                "FROM Horario\n" +                                
-                                "INNER JOIN Profesor ON Horario.idProfesor = Profesor.idProfesor\n" +
-                                "INNER JOIN salon ON horario.idSalon = salon.idSalon\n"+
-                                "where concat(tituloProfesor,' ',nombreProfesor,' ',apellidoPaternoProfesor,' ',apellidoMaternoProfesor) like '%"+nombreProf+"%'\n"+
-                                "AND salon like '%"+salon+"%';";
+			query = "SELECT Count(*)\n " 
+                                 + "FROM horario\n" 
+                                  + "left outer join horarioReal on horario.idHorario = horarioReal.idHorario\n"
+                                  + "left outer join horarioReal on horario.idHorario = horarioReal.idHorario\n"
+                                  + "union\n"
+                                  + "select * from horario\n "
+                                  + "left outer join horarioComp on horario.idHorario = horarioComp.idHorario\n"
+                                  + "order by grupo;";
+                              
                         
 			vista = orden.executeQuery(query);
 
@@ -141,23 +144,31 @@ public class HorarioDAO{
 
 			horarios = new Object[totalTuplas][13];
                         
-                        query = "SELECT  Horario.grupo as Grupo, salon.salon as Salon, salon.cupoSalon as Cupo, salon.vacanteSalon as Vacante,\n"+ 
-                                "Profesor.folioProfesor as 'Folio Profesor',\n"+
-                                "concat(Profesor.tituloProfesor,' ',Profesor.nombreProfesor,' ',Profesor.apellidoPaternoProfesor,' ', Profesor.apellidoMaternoProfesor) as Profesor\n"+
-                                "FROM Horario\n"+
-                                "Inner JOIN Asignatura ON Horario.idAsignatura = Asignatura.idAsignatura \n"+
-                                "INNER JOIN Profesor ON Horario.idProfesor = Profesor.idProfesor\n"+
-                                "INNER JOIN Dias D1 ON Horario.Dia1 = D1.idDias\n"+
-                                "INNER JOIN Dias D2 ON Horario.Dia2 = D2.idDias\n"+
-                                "INNER JOIN Dias D3 ON Horario.Dia3 = D3.idDias\n"+
-                                "INNER JOIN salon ON horario.idSalon = salon.idSalon\n"+
-                                "WHERE concat(tituloProfesor,' ',nombreProfesor,' ',apellidoPaternoProfesor,' ',apellidoMaternoProfesor) like '%"+nombreProf+"%'\n"+
-                                "AND salon like '%"+salon+"%'\n"+
-                                "ORDER BY Dia1, asignatura, horaEntrada, grupo, salon;";
+                        query = 
+                                   "SELECT horario.idHorario, claveAsig as clave, nombreAsig as asignatura, grupo, salon,  Profesor.folio as folio,\n"
+                                  + "concat(Profesor.titulo,' ',Profesor.nombre,' ',Profesor.apPatern,' ',Profesor.apMatern) as profesor,\n"
+                                  + "concat(horaEntrada,' - ',horaSalida) as horario, dias\n"
+                                  + "FROM asignaturaxhorario\n"
+                                  + "left outer join asignatura on asignaturaxhorario.idAsignatura = asignatura.idAsignatura\n"
+                                  + "left outer join horario on asignaturaxhorario.idHorario = horario.idHorario\n"
+                                  + "left outer join profesor on profesor.idProfesor = horario.idHorario\n"
+                                  + "left outer join salon on salon.idSalon = horario.idSalon\n"
+                                  + "left outer join horarioreal on horario.idHorario = horarioreal.idHorario\n"
+                                  + "WHERE dias LIKE '%%'\n" 
+                                  + "UNION\n"
+                                  + "SELECT horario.idHorario, claveAsig as clave, nombreAsig as asignatura, grupo, salon,  Profesor.folio as folio,\n"
+                                  + "concat(Profesor.titulo,' ',Profesor.nombre,' ',Profesor.apPatern,' ',Profesor.apMatern) as profesor,\n"
+                                  + "concat(horaEntrada,' - ',horaSalida) as horario, dias\n"
+                                  + "FROM asignaturaxhorario\n"
+                                  + "left outer join asignatura on asignaturaxhorario.idAsignatura = asignatura.idAsignatura\n"
+                                  + "left outer join horario on asignaturaxhorario.idHorario = horario.idHorario\n"
+                                  + "left outer join profesor on profesor.idProfesor = horario.idHorario\n"
+                                  + "left outer join salon on salon.idSalon = horario.idSalon\n"
+                                  + "right outer join horariocomp on horario.idHorario = horariocomp.idHorario\n"
+                                  + "WHERE dias LIKE '%%'\n" //para Buscar Dias repetidos, hay que verificar la parte de los traslapes
+                                  + "order by asignatura;\n";
                         vista = orden.executeQuery(query);
 			int pos = 0;
-                        //concat(Horario.horaEntrada, ' - ', Horario.horaSalida)
-                            
 			//segun yo, aqui se debe de acomodar a como quieren que salga en iReport D: pero no sale
 			while (vista.next()){
 				horarios[pos][0] = vista.getString("Horario");
@@ -192,8 +203,8 @@ public class HorarioDAO{
 
                     orden = conexion.createStatement();	//crea objeto instrucción
 
-                    query = "SELECT dias FROM Dias\n"+
-                            "ORDER BY idDias;";		//query para contar profesores
+                    query = "SELECT dias FROM horarioReal\n"+
+                            "ORDER BY idHorario;";		//query para contar profesores
                     vista = orden.executeQuery(query);							//ejecuta query
 		    
                     int pos = 0;

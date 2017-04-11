@@ -12,6 +12,8 @@ package geologia.vista;
 
 import geologia.control.HorarioControl;
 import geologia.modelo.dao.AsignaturaDAO;
+import geologia.modelo.dao.HorarioRealDAO;
+import geologia.modelo.dao.HorarioCompDAO;
 import geologia.modelo.dao.HorarioDAO;
 import geologia.modelo.dao.ProfesorDAO;
 import geologia.modelo.dao.SalonDAO;
