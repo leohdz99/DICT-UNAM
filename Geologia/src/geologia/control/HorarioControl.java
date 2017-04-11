@@ -186,7 +186,7 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
                     "Advertencia", JOptionPane.INFORMATION_MESSAGE);
             
             Horario horario =  new Horario(ventana.getSemestre(), 
-                ventana.getJcTipo().getSelectedItem().toString(), 
+                
                 ventana.getTxtGrupo().getText(),
                 ventana.getTxtHoraE().getText(),
                 ventana.getTxtHoraS().getText(), 
@@ -287,7 +287,7 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
         ventana.getTxtHoraE().setText("");
         ventana.getTxtHoraS().setText("");//toma id del renglón de la tabla
         ventana.getTxtGrupo().setText((String) (tabla.getValueAt(renglon, 1)));
-        ventana.getJcTipo().setSelectedItem((String) (tabla.getValueAt(renglon, 2)));
+        //ventana.getJcTipo().setSelectedItem((String) (tabla.getValueAt(renglon, 2)));
         ventana.getJcSalon().setSelectedItem((String) (tabla.getValueAt(renglon, 3)));
         ventana.getJcAsignatura().setSelectedItem((String)(tabla.getValueAt(renglon, 10)));
         ventana.getJcNombreProf().setSelectedItem((String)(tabla.getValueAt(renglon, 12)));
