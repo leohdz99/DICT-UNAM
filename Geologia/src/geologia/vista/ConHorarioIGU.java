@@ -23,6 +23,7 @@ import geologia.modelo.dao.SalonDAO;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import geologia.control.ConHorarioControl;
+import geologia.modelo.dao.AsignaturaDAO;
 
 /**
  *
@@ -32,18 +33,19 @@ public class ConHorarioIGU extends JInternalFrame{
     
     private static ConHorarioIGU ventanaCon;//define un objeto de esta clase para que sólo exista un objeto de ella
 						//(patrón singleton) para usar este objeto se crea el método getVentana()
-    private JButton btnBuscar = new JButton("Buscar");
-    private JButton btnReporte = new JButton("Generar Reporte");
+    private JButton btnBuscar = new JButton("Buscar por Salon");
+    private JButton btnBuscar2 = new JButton("Buscar por Asignatura");
+    private JButton btnReporte = new JButton("Guardar Reporte");
     private JTable tblLista = new JTable();
     private Box boxVerticalPrincipal = Box.createVerticalBox();
     private JComboBox jcbMostrar = new JComboBox();
+    private JComboBox jcbMostrarAsig = new JComboBox();
     private ConHorarioControl control = new ConHorarioControl(this);
-    private String semestre;
     
-    private ConHorarioIGU(String sem){
+    private ConHorarioIGU(){
         
-         super("*** CONSULTA DE HORARIOS ***", false, true, false, true); 
-         this.semestre = sem;
+         super("*** CONSULTA DE HORARIOS ***", false, true, false, false); 
+         
          addBxVerticalPrincipal();//crea y agrega el panel principal con todos los componentes
 		
 		//setEventos();	//define la clase controladora para los componentes
@@ -63,7 +65,7 @@ public class ConHorarioIGU extends JInternalFrame{
 		
 		//crea y define características del panel de Edición
 		JPanel pnConsulta = new JPanel();
-		pnConsulta.setBorder(new TitledBorder(null, "Consultar Horario del semestre: "+semestre, TitledBorder.CENTER, TitledBorder.TOP));
+		pnConsulta.setBorder(new TitledBorder(null, "Consultar Horario", TitledBorder.CENTER, TitledBorder.TOP));
 				//tipo de borde por omision, "Título", justificación borde, posición borde (arriba)
 		pnConsulta.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
 		
@@ -74,10 +76,17 @@ public class ConHorarioIGU extends JInternalFrame{
 		
 		//agrega componentes al panel de datos
 		JLabel lbMostrar = new JLabel("Buscar Horario por Salon: ");
-		pnDatos.add(lbMostrar);						
-		jcbMostrar.setModel(new DefaultComboBoxModel(new String[] {}));
-                llenarCB();
+                JLabel lbMostrarAsig = new JLabel("Buscar Horario por Asignatura: ");
+		pnDatos.add(lbMostrar);	
+                jcbMostrar.setModel(new DefaultComboBoxModel(new String[] {}));
                 pnDatos.add(jcbMostrar);
+                pnDatos.add(lbMostrarAsig);
+                jcbMostrarAsig.setModel(new DefaultComboBoxModel(new String[] {}));
+		pnDatos.add(jcbMostrarAsig);
+                llenarCB();
+                llenarCB2();
+                
+                
                 
 		
 		//txNombre.setActionCommand("NombreAlumno");	//para poder reconocerlo en el controlador con getActionCommand
@@ -97,16 +106,21 @@ public class ConHorarioIGU extends JInternalFrame{
 		//define características de botones de acciones		
 		btnBuscar.setMnemonic('B');
                 btnReporte.setMnemonic('G');
+                btnBuscar2.setMnemonic('p');
                 
                 btnBuscar.addActionListener(control);
+                btnBuscar2.addActionListener(control);
                 btnReporte.addActionListener(control);
 						
 		//agrega botones con 5 pixeles de espacio entre ellos 
-		pnBotones.add(btnBuscar);	
+		pnBotones.add(btnBuscar);
+                pnBotones.add(Box.createVerticalStrut(15));
+                pnBotones.add(Box.createHorizontalStrut(15));//agrega 5 pixeles de expacio
+                pnBotones.add(btnBuscar2);
 		pnBotones.add(Box.createVerticalStrut(15));
                 pnBotones.add(Box.createHorizontalStrut(15));//agrega 5 pixeles de expacio
                 pnBotones.add(btnReporte);
-                
+  
 		
 		return pnBotones;	//regresa el panel
 	}
@@ -128,15 +142,13 @@ public class ConHorarioIGU extends JInternalFrame{
 	}
         public void setTabla() {
 		
-                tblLista.removeAll();
 		String titulos[] = {"Horario", "Grupo","Tipo","Salon","Cupo","Vacante","Dia 1","Dia 2","Dia 3","Clave", "Asignatura", "Folio Profesor","Profesor"  };				//títulos de la tabla
-		Object datos[][] = HorarioDAO.obtenerHorarios("","","",semestre);					//obtiene todos los datos de la base de datos
+		Object datos[][] = HorarioDAO.obtenerHorarios("","");					//obtiene todos los datos de la base de datos
 
 		final DefaultTableModel modeloTabla = new DefaultTableModel(){	//crea modelo de tabla
 			
 			private static final long serialVersionUID = 1L;			//objeto serializable
 
-                        @Override
 			public boolean isCellEditable(int row, int column) {  		//tabla no editable
 				return false;
 			}
@@ -166,38 +178,45 @@ public class ConHorarioIGU extends JInternalFrame{
                 
         }
     
-        public static ConHorarioIGU getConVentana(String sem){
+        public static ConHorarioIGU getConVentana(){
 					
 		if(ventanaCon == null){				//si no se ha creado por única vez
-			ventanaCon = new ConHorarioIGU(sem);		//se crea
+			ventanaCon = new ConHorarioIGU();		//se crea
 		}
 		
 		return ventanaCon;					
         }
     
-        public void llenarCB() {
-            jcbMostrar.removeAllItems(); //Vaciamos el JComboBox
-            ArrayList<String> resultat;
-            resultat = SalonDAO.obtenerNombreSalon();//La consulta tiene que retornar un ArrayList
-            jcbMostrar.addItem("");
-            for(int i=0; i < resultat.size();i++){
-                jcbMostrar.addItem(resultat.get(i));
-            }
+    public void llenarCB() {
+        jcbMostrar.removeAllItems(); //Vaciamos el JComboBox
+        ArrayList<String> resultat;
+        resultat = SalonDAO.obtenerNombreSalon();//La consulta tiene que retornar un ArrayList
+        jcbMostrar.addItem("");
+        for(int i=0; i < resultat.size();i++){
+            jcbMostrar.addItem(resultat.get(i));
         }
+    }
+    
+    public void llenarCB2() {
+        jcbMostrarAsig.removeAllItems(); //Vaciamos el JComboBox
+        ArrayList<String> resultat;
+        resultat = AsignaturaDAO.obtenerNombreAsignatura("");//La consulta tiene que retornar un ArrayList
+        jcbMostrarAsig.addItem("");
+        for(int i=0; i < resultat.size();i++){
+            jcbMostrarAsig.addItem(resultat.get(i));
+        }
+    }
          
 
     public JComboBox getJcbMostrar() {
         return jcbMostrar;
     }
+    public JComboBox getJcbMostrar2() {
+        return jcbMostrarAsig;
+    }
     public JTable getTblLista() {
         return tblLista;
     }
-
-    public void setSemestre(String semestre) {
-        this.semestre = semestre;
-    }
-    
-    
     
 }
     
