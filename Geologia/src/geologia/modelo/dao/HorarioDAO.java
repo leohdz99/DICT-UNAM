@@ -21,6 +21,10 @@ import geologia.modelo.dao.ProfesorDAO;
 import geologia.modelo.dao.AsignaturaDAO;
 import geologia.modelo.dao.SalonDAO;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HorarioDAO{
 
@@ -38,11 +42,9 @@ public class HorarioDAO{
 
 		try{
 			
-                    
                         conexion = ConexionBD.getConexion();
-			
-              
-			query = "INSERT INTO Horario(idHorario,grupo,idSalon,idProfesor) VALUES (?, ?, ?, ?);";
+			query = "INSERT INTO Horario(idHorario,grupo,idSalon,idProfesor) "
+                                + "VALUES (?, ?, ?, ?);";
                         sentencia = conexion.prepareStatement(query);
                         
                         sentencia.setInt(1,horario.getIdHorario());
