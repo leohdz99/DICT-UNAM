@@ -52,7 +52,7 @@ public class MenuPrincipalControl implements ActionListener{	//sólo implementa 
                     case "Profesores"                   : ventana = ProfesorIGU.getVentana(); 
                                                           comprobarVentana(ventana);
                                                             break;
-                    case "Horario"			: ventanaCon = ConHorarioIGU.getConVentana(semestre);	//obtiene ventana de Horario
+                    case "Horario"			: ventanaCon = ConHorarioIGU.getConVentana();	//obtiene ventana de Horario
                                                           comprobarVentana(ventanaCon);
                                                             break;
                     case "Profesor"                     : ventana = ConProfesorIGU.getConVentana();	//obtiene ventana de Horario
