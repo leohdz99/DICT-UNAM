@@ -26,9 +26,9 @@ public class MenuPrincipalIGU extends JFrame{	//Frame principal
         private String semestre;
         
 	//constructor00
-	public MenuPrincipalIGU(String sem){		
+	public MenuPrincipalIGU(){		
 		
-                semestre = sem;
+                //semestre = sem;
 		agregarEscritorio();									//crea y agrega el escritorio a la ventana	
 		
 		controlador = new MenuPrincipalControl(this);		//crea objeto controlador

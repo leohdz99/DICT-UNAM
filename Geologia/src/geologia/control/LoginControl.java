@@ -42,10 +42,10 @@ public class LoginControl extends KeyAdapter implements ActionListener{
                     && login.getPass().getPassword().length > 0 ){
                 if(LoginDAO.validarUsuario(login.getUsuario().getText(),
                         new String(login.getPass().getPassword()))){
-                    boolean val = true;
-                    while (val){
-                        try {
-                            String sem = JOptionPane.showInputDialog(null, 
+                    //boolean val = true;
+                    //while (val){
+                       // try {
+                           /* String sem = JOptionPane.showInputDialog(null, 
                             "Semestre a Ingresar(Ejemplo 2000-1): ", 
                             "Ingrese un semestre", 
                             JOptionPane.INFORMATION_MESSAGE);
@@ -57,16 +57,16 @@ public class LoginControl extends KeyAdapter implements ActionListener{
                                 if (opt == JOptionPane.NO_OPTION) {
                                     System.exit(0);
                                 }
-                            }else{
+                            *///}else{
                                 login.dispose();
-                                new MenuPrincipalIGU(sem);
-                                val = false;
-                            }
-                        } catch(NullPointerException npe) {
-                            System.exit(0);
-                        }
+                                new MenuPrincipalIGU();
+                                //val = false;
+                            
+                        //} catch(NullPointerException npe) {
+                          //  System.exit(0);
+                        //}
                         
-                    }
+                    //}
                    
                 } else {
                     JOptionPane.showMessageDialog( null, 
