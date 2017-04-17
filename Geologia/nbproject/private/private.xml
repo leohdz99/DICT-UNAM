@@ -3,7 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/58599749/Documents/GitHub/DICT-UNAM/Geologia/src/geologia/control/MenuPrincipalControl.java</file>
+            <file>file:/C:/Users/58599749/Documents/GitHub/DICT-UNAM/Geologia/src/geologia/vista/ConfiguracionIGU.java</file>
+            <file>file:/C:/Users/58599749/Documents/GitHub/DICT-UNAM/Geologia/src/geologia/control/LoginControl.java</file>
+            <file>file:/C:/Users/58599749/Documents/GitHub/DICT-UNAM/Geologia/src/geologia/vista/MenuPrincipalIGU.java</file>
+            <file>file:/C:/Users/58599749/Documents/GitHub/DICT-UNAM/Geologia/src/geologia/vista/GeneradorPDF.java</file>
         </group>
     </open-files>
 </project-private>
