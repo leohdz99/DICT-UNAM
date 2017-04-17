@@ -44,7 +44,7 @@ public class MenuPrincipalControl implements ActionListener{	//sólo implementa 
             	//define objeto ventana
 
             switch(evento.getActionCommand()){
-                    case "Horarios"			: ventana = HorarioIGU.getVentana(semestre);	//obtiene ventana de Horarios
+                    case "Horarios"			: ventana = HorarioIGU.getVentana();	//obtiene ventana de Horarios
                                                           comprobarVentana(ventana);
                                                           
                                                           

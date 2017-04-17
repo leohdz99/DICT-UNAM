@@ -25,8 +25,8 @@ public class ProfesorDAO{
 		try{
 			conexion = ConexionBD.getConexion();
 			insertSQL = conexion.prepareStatement( //no se si es preparedStatement o PrepaderStatement, pero mi logica es la que empieza con P mayuscula 
-				"INSERT INTO Profesor (folioProfesor, tituloProfesor, apellidoPaternoProfesor," 
-				+ "apellidoMaternoProfesor, nombreProfesor, rfc, activo)"  
+				"INSERT INTO Profesor (folio, titulo, apPatern," 
+				+ "apMatern, nombre, rfc, activo)"  
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?)");
 			//INT = NUMERIC??
 			//CHAR y VATCHAR = STIRNG??
@@ -67,9 +67,9 @@ public class ProfesorDAO{
 			conexion = ConexionBD.getConexion();
 			insertSQL = conexion.prepareStatement(
 				"UPDATE Horario" + 
-				"SET folioProfesor = ?, tituloProfesor = ?, apellidoPaternoProfesor = ?, apellidoMaternoProfesor = ?,"
-				+ "nombreProfesor = ?, rfc = ?, activo = ?" + 
-				"WHERE folioProfesor = ?");
+				"SET folio = ?, titulo = ?, apPatern = ?, apMatern = ?,"
+				+ "nombre = ?, rfc = ?, activo = ?" + 
+				"WHERE folio = ?");
 
 			insertSQL.setInt(1,profesor.getFolioProfesor());
 			insertSQL.setString(2,profesor.getTituloProfesor());
@@ -106,9 +106,9 @@ public class ProfesorDAO{
 			conexion = ConexionBD.getConexion();
 			insertSQL = conexion.prepareStatement(
 				"SELECT COUNT(*) as encontrado FROM profesor "+
-                                        "WHERE nombreProfesor = ? "+
-                                        "AND apellidoPaternoProfesor = ? "+
-                                        "AND apellidoMaternoProfesor = ?;");
+                                        "WHERE nombre = ? "+
+                                        "AND apPatern = ? "+
+                                        "AND apMatern = ?;");
 
 			tuplas = insertSQL.executeQuery();
                         
@@ -138,7 +138,7 @@ public class ProfesorDAO{
                         
 			query = "SELECT Count(*)\n" +
                                 "FROM Profesor\n" +
-                                "WHERE concat(tituloProfesor,' ',nombreProfesor,' ',apellidoPaternoProfesor,' ',apellidoMaternoProfesor) like '%"+nombre+"%';";
+                                "WHERE concat(titulo,' ',nombre,' ',apPatern,' ',apMatern) like '%"+nombre+"%';";
                                 
 			tuplas = sentencia.executeQuery(query);
 
@@ -147,8 +147,8 @@ public class ProfesorDAO{
 
 			profesores = new Object[totalTuplas][4];
                         
-                        query = "SELECT rfc as RFC,folioProfesor as 'Folio Profesor',concat(tituloProfesor,' ',nombreProfesor,' ',apellidoPaternoProfesor,' ',apellidoMaternoProfesor) as Profesor, activo as Activo FROM Profesor\n"+
-                                "where concat(tituloProfesor,' ',nombreProfesor,' ',apellidoPaternoProfesor,' ',apellidoMaternoProfesor) like '%"+nombre+"%'\n"+
+                        query = "SELECT rfc as RFC,folio as 'Folio Profesor',concat(titulo,' ',nombre,' ',apPatern,' ',apMatern) as Profesor, activo as Activo FROM Profesor\n"+
+                                "where concat(titulo,' ',nombre,' ',apPatern,' ',apMatern) like '%"+nombre+"%'\n"+
                                 "ORDER BY idProfesor;";
                         tuplas = sentencia.executeQuery(query);
 			int pos = 0;
@@ -182,9 +182,7 @@ public class ProfesorDAO{
 
                     sentencia = conexion.createStatement();	//crea objeto instrucción
 
-                    query = "SELECT concat(tituloProfesor,' ',apellidoPaternoProfesor,' ',apellidoMaternoProfesor,' ',nombreProfesor) FROM Profesor\n"+
-                            "WHERE concat(tituloProfesor,' ',apellidoPaternoProfesor,' ',apellidoMaternoProfesor,' ',nombreProfesor) like '%"+nombre+"%'\n"+
-                            "ORDER BY apellidoPaternoProfesor;";		//query para contar profesores
+                    query = "SELECT concat(titulo,' ',apPatern,' ',apMatern,' ',nombre) FROM Profesor";		//query para contar profesores
                     tuplas = sentencia.executeQuery(query);							//ejecuta query
 		    
                     int post = 0;

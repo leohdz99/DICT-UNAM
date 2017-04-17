@@ -43,7 +43,7 @@ public class AsignaturaDAO{
 	        
 
                     query = "SELECT idAsignatura FROM Asignatura " +		
-        			"WHERE nombreAsignatura like '%" + nombreAsignatura + "%' " +
+        			"WHERE nombreAsiglike '%" + nombreAsignatura + "%' " +
 		        	"ORDER BY idAsignatura";				//query para obtener Profesores que corresponden con el apellido
 		    tuplas = sentencia.executeQuery(query);		//ejecuta query					
 		    
@@ -73,9 +73,9 @@ public class AsignaturaDAO{
 
                     sentencia = conexion.createStatement();	//crea objeto instrucción
 
-                    query = "SELECT nombreAsignatura FROM asignatura\n"+
-                            "WHERE nombreAsignatura like '%"+nombre+"%'\n"+
-                            "ORDER BY nombreAsignatura;";		//query para contar profesores
+                    query = "SELECT nombreAsig FROM asignatura\n"+
+                            "WHERE nombreAsig like '%"+nombre+"%'\n"+
+                            "ORDER BY nombreAsig;";		//query para contar profesores
                     tuplas = sentencia.executeQuery(query);							//ejecuta query
 		    
                     int pos = 0;

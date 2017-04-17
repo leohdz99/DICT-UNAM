@@ -28,8 +28,7 @@ import javax.swing.table.*;
 public class HorarioIGU extends JInternalFrame {
     private static HorarioIGU ventana;		//define un objeto de esta clase para que sólo exista un objeto de ella
 						//(patrón singleton) para usar este objeto se crea el método getVentana()
-	private String semestre;
-	
+	//private String semestre;
 	//componentes
 	//campos de texto
 	
@@ -37,8 +36,8 @@ public class HorarioIGU extends JInternalFrame {
         private JComboBox jcSalon = new JComboBox();
         private JComboBox jcAsignatura = new JComboBox();
         private JTextField txtGrupo = new JTextField();
-        private JComboBox jcHoraE = new JComboBox();	
-	private JComboBox jcHoraS = new JComboBox();
+        private JTextField txtHoraE = new JTextField();
+        private JTextField txtHoraS = new JTextField();
         private JComboBox jcNombreProf = new JComboBox();
         private Checkbox chkLunes = new Checkbox("Lunes");
         private Checkbox chkMartes = new Checkbox("Martes");
@@ -68,11 +67,11 @@ public class HorarioIGU extends JInternalFrame {
         private HorarioControl controlador = new HorarioControl(this);
         
 	//constructor
-	private HorarioIGU (String sem){
+	private HorarioIGU (){
 		
                 
                 super("*** Horarios ***", false, true, false, true);
-		this.semestre = sem;
+		
 		addBxVerticalPrincipal();//crea y agrega el panel principal con todos los componentes
 		
 		setEventos();	//define la clase controladora para los componentes
@@ -93,7 +92,7 @@ public class HorarioIGU extends JInternalFrame {
 		
 		//crea y define características del panel de Edición
 		JPanel pnHorario = new JPanel();
-		pnHorario.setBorder(new TitledBorder(null, "Edici\u00F3n de Horario del semestre: "+semestre, TitledBorder.CENTER, TitledBorder.TOP));
+		pnHorario.setBorder(new TitledBorder(null, "Edici\u00F3n de Horario del semestre ", TitledBorder.CENTER, TitledBorder.TOP));
 				//tipo de borde por omision, "Título", justificación borde, posición borde (arriba)
 		pnHorario.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
 		
@@ -103,28 +102,26 @@ public class HorarioIGU extends JInternalFrame {
 		
                 pnDatos.add(lbAsignatura);
                 jcAsignatura.setModel(new DefaultComboBoxModel(new String[] {}));
-                llenarJcAsignatura();
                 pnDatos.add(jcAsignatura);
-                
+                llenarJcAsignatura();
 
                 pnDatos.add(lbGrupo);             
                 pnDatos.add(txtGrupo);
                 
                 pnDatos.add(lbProfesor);
                 jcNombreProf.setModel(new DefaultComboBoxModel(new String[] {}));
-                //llenarJcNombreProf();
                 pnDatos.add(jcNombreProf);
-		
+		llenarJcNombreProf();
                 pnDatos.add(lbSalon);
                 jcSalon.setModel(new DefaultComboBoxModel(new String[] {}));
-                //llenarJcSalon();
-                pnDatos.add(jcSalon);
+                pnDatos.add(jcSalon);             
+                llenarJcSalon();
                 
 		pnDatos.add(lbHoraE);						
-		pnDatos.add(jcHoraE);
+		pnDatos.add(txtHoraE);
 
 		pnDatos.add(lbHoraS);	
-                pnDatos.add(jcHoraS);
+                pnDatos.add(txtHoraS);
                 
                 JPanel pnDias = new JPanel();
                 pnDias.setLayout(new GridLayout(1,0));
@@ -148,16 +145,18 @@ public class HorarioIGU extends JInternalFrame {
 		
 		//crea y define características del panel de botones
 		JPanel pnBotones = new JPanel();
-		pnBotones.setLayout(new BoxLayout(pnBotones, BoxLayout.Y_AXIS));
+		pnBotones.setLayout(new BoxLayout(pnBotones, BoxLayout.X_AXIS));
 		
 		//define características de botones de acciones		
 		btnGuardar.setMnemonic('G');
 						
 		//agrega botones con 5 pixeles de espacio entre ellos 
-		pnBotones.add(btnGuardar);	
-		pnBotones.add(Box.createVerticalStrut(5));	//agrega 5 pixeles de expacio
+		pnBotones.add(btnGuardar);
+                pnBotones.add(Box.createVerticalStrut(15));
+                pnBotones.add(Box.createHorizontalStrut(15));//agrega 5 pixeles de expacio
 		pnBotones.add(btnCancelar);
                 pnBotones.add(Box.createVerticalStrut(5));
+                pnBotones.add(Box.createHorizontalStrut(15));
                 btnModificar.setEnabled(false);
                 pnBotones.add(btnModificar);
 		
@@ -247,10 +246,10 @@ public class HorarioIGU extends JInternalFrame {
             tblLista.getSelectionModel().addListSelectionListener(controlador);
         }
 	
-	public static HorarioIGU getVentana(String sem){
+	public static HorarioIGU getVentana(){
 					
 		if(ventana == null){				//si no se ha creado por única vez
-			ventana = new HorarioIGU(sem);		//se crea
+			ventana = new HorarioIGU();		//se crea
 		}
 		
 		return ventana;					
@@ -329,12 +328,10 @@ public class HorarioIGU extends JInternalFrame {
         return btnModificar;
     }
 
-    public String getSemestre() {
-        return semestre;
-    }
+   // public String getSemestre() {
+      //  return semestre;
+    //}
 
-    public HorarioIGU() {
-    }
     public void limpiar(){
         jcAsignatura.setSelectedIndex(0);
         jcSalon.setSelectedIndex(0);
