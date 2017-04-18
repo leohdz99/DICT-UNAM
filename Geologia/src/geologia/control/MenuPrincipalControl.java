@@ -12,7 +12,7 @@ package geologia.control;
 import java.awt.event.*;
 import javax.swing.*;
 
-import geologia.vista.HorarioIGU;
+import geologia.vista.PruebaHIGU;
 import geologia.vista.ConHorarioIGU;
 import geologia.vista.ConProfesorIGU;
 import geologia.vista.MenuPrincipalIGU;
@@ -44,7 +44,7 @@ public class MenuPrincipalControl implements ActionListener{	//sólo implementa 
             	//define objeto ventana
 
             switch(evento.getActionCommand()){
-                    case "Horarios"			: ventana = HorarioIGU.getVentana();	//obtiene ventana de Horarios
+                    case "Horarios"			: ventana = PruebaHIGU.getVentana();	//obtiene ventana de Horarios
                                                           comprobarVentana(ventana);
                                                           
                                                           

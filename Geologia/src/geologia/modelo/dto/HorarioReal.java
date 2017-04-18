@@ -25,6 +25,7 @@ public class HorarioReal {
     private int idHorario;
     private float horaEntrada;
     private float horaSalida;
+    // CAmbiarlo a String 
     private int dias;
     
      public HorarioReal() {

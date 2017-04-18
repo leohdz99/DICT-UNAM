@@ -29,7 +29,7 @@ public class BarraHtasIGU extends JPanel{		//es un PANEL
 	//private BarraHtasControl controlador;
 
 	//constructor
-	public BarraHtasIGU(HorarioIGU ventana){		
+	public BarraHtasIGU(PruebaHIGU ventana){		
 
 		//controlador = new BarraHtasControl(this, ventana);				//crea objeto controlador de la barra
 		setBorder(new LineBorder(new Color(192, 192, 192), 1, true));	//borde de linea simple color gris

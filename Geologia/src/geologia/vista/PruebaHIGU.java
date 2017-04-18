@@ -25,8 +25,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
 
-public class HorarioIGU extends JInternalFrame {
-    private static HorarioIGU ventana;		//define un objeto de esta clase para que sólo exista un objeto de ella
+public class PruebaHIGU extends JInternalFrame {
+    private static PruebaHIGU ventana;		//define un objeto de esta clase para que sólo exista un objeto de ella
 						//(patrón singleton) para usar este objeto se crea el método getVentana()
 	//private String semestre;
 	//componentes
@@ -67,7 +67,7 @@ public class HorarioIGU extends JInternalFrame {
         private HorarioControl controlador = new HorarioControl(this);
         
 	//constructor
-	private HorarioIGU (){
+	private PruebaHIGU (){
 		
                 
                 super("*** Horarios ***", false, true, false, true);
@@ -177,7 +177,7 @@ public class HorarioIGU extends JInternalFrame {
 								//tipo de borde (omision), "titulo", justificación del título, posición del título
 				
 		JScrollPane scrTabla = new JScrollPane();				//scroll para ver barras de desplazamiento
-		scrTabla.setPreferredSize(new Dimension(900, 300));		//redimensiona para que quepa en panel
+		scrTabla.setPreferredSize(new Dimension(800, 100));		//redimensiona para que quepa en panel
 		scrTabla.setViewportView(tblLista);	//agrega la tabla al scroll con viewport para poder ver los encabezados se columnas 
 		pnLista.add(scrTabla);									//agrega scroll con la tabla al panel
 			
@@ -187,8 +187,8 @@ public class HorarioIGU extends JInternalFrame {
 	
 	public void setTabla() {
 		
-		String titulos[] = {"Horario", "Grupo","Tipo","Salon","Cupo","Vacante","Dia 1","Dia 2","Dia 3","Clave", "Asignatura", "Folio Profesor","Profesor"  };				//títulos de la tabla
-		Object datos[][] = null;//HorarioDAO.obtenerHorarios("","", "", semestre);					//obtiene todos los datos de la base de datos
+		String titulos[] = {"Horario", "Grupo","Salon","Vacante","Dias","Clave", "Asignatura", "Folio Profesor","Profesor"  };				//títulos de la tabla
+		Object datos[][] = HorarioDAO.obtenerHorarios("","");					//obtiene todos los datos de la base de datos
 
 		final DefaultTableModel modeloTabla = new DefaultTableModel(){	//crea modelo de tabla
 			
@@ -212,14 +212,10 @@ public class HorarioIGU extends JInternalFrame {
                 tblLista.getColumnModel().getColumn(2).setPreferredWidth(40);
                 tblLista.getColumnModel().getColumn(3).setPreferredWidth(40);
                 tblLista.getColumnModel().getColumn(4).setPreferredWidth(40);
-                tblLista.getColumnModel().getColumn(5).setPreferredWidth(40);
+                tblLista.getColumnModel().getColumn(5).setPreferredWidth(120);
                 tblLista.getColumnModel().getColumn(6).setPreferredWidth(40);
-                tblLista.getColumnModel().getColumn(7).setPreferredWidth(40);
-                tblLista.getColumnModel().getColumn(8).setPreferredWidth(40);
-                tblLista.getColumnModel().getColumn(9).setPreferredWidth(60);
-                tblLista.getColumnModel().getColumn(10).setPreferredWidth(250);
-                tblLista.getColumnModel().getColumn(11).setPreferredWidth(60);
-                tblLista.getColumnModel().getColumn(12).setPreferredWidth(300);
+                tblLista.getColumnModel().getColumn(7).setPreferredWidth(200);
+                
         }
 
 	/*
@@ -246,10 +242,10 @@ public class HorarioIGU extends JInternalFrame {
             tblLista.getSelectionModel().addListSelectionListener(controlador);
         }
 	
-	public static HorarioIGU getVentana(){
+	public static PruebaHIGU getVentana(){
 					
 		if(ventana == null){				//si no se ha creado por única vez
-			ventana = new HorarioIGU();		//se crea
+			ventana = new PruebaHIGU();		//se crea
 		}
 		
 		return ventana;					
@@ -290,16 +286,6 @@ public class HorarioIGU extends JInternalFrame {
         }
     }
     
-    public void llenarJcDias(JComboBox jcb){
-        jcb.removeAllItems();
-        ArrayList<String> resultados;
-        resultados = HorarioDAO.obtenerDias();
-        for (int i = 0; i < resultados.size(); i++) {
-            jcb.addItem(resultados.get(i));
-        }
-        jcb.setSelectedIndex(6);
-    }
-
     public JComboBox getJcSalon() {
         return jcSalon;
     }

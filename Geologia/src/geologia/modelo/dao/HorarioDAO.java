@@ -17,6 +17,8 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import geologia.modelo.ConexionBD;
 import geologia.modelo.dto.Horario;
+import geologia.modelo.dto.HorarioReal;
+import geologia.modelo.dto.HorarioComp;
 import geologia.modelo.dao.ProfesorDAO;
 import geologia.modelo.dao.AsignaturaDAO;
 import geologia.modelo.dao.SalonDAO;
@@ -25,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.lang.Math;
 
 public class HorarioDAO{
 
@@ -146,8 +149,39 @@ public class HorarioDAO{
 
 			horarios = new Object[totalTuplas][13];
                         
-                        query = 
-                                   "SELECT horario.idHorario, claveAsig as clave, nombreAsig as asignatura, grupo, salon,  Profesor.folio as folio,\n"
+                        query =     "select horario.idHorario, claveAsig as clave, nombreAsig as asignatura, grupo, salon,  Profesor.folio as folio,"
+                                    +"concat(Profesor.titulo,' ',Profesor.nombre,' ',Profesor.apPatern,' ',Profesor.apMatern) as profesor,"
+                                    +"concat(horaEntrada,' - ',horaSalida) as horario, dias"
+                                    +" from asignaturaxhorario\n"
+                                    +"left outer join"
+                                    +"\nasignatura on asignaturaxhorario.idAsignatura = asignatura.idAsignatura"
+                                    +"\nleft outer join "
+                                    +"horario on asignaturaxhorario.idHorario = horario.idHorario"
+                                    +"\nleft outer join "
+                                    +"profesor on profesor.idProfesor = horario.idHorario"
+                                    +"\nleft outer join "
+                                    +"salon on salon.idSalon = horario.idSalon"
+                                    +"\nleft outer join "
+                                    +"horarioreal on horario.idHorario = horarioreal.idHorario"
+                                    +"\nwhere dias like '%%'\n" 
+                                    +"union\n"
+                                    +"select horario.idHorario, claveAsig as clave, nombreAsig as asignatura, grupo, salon,  Profesor.folio as folio,"
+                                    +"concat(Profesor.titulo,' ',Profesor.nombre,' ',Profesor.apPatern,' ',Profesor.apMatern) as profesor,"
+                                    +"concat(horaEntrada,' - ',horaSalida) as horario, dias\n"
+                                    +"from asignaturaxhorario\n"
+                                    +"left outer join \n"
+                                    +"asignatura on asignaturaxhorario.idAsignatura = asignatura.idAsignatura"
+                                    +"\nleft outer join "
+                                    +"horario on asignaturaxhorario.idHorario = horario.idHorario\n"
+                                    +"left outer join "
+                                    +"profesor on profesor.idProfesor = horario.idHorario\n"
+                                    +"left outer join "
+                                    +"salon on salon.idSalon = horario.idSalon\n"
+                                    +"right outer join "
+                                    +"horariocomp on horario.idHorario = horariocomp.idHorario\n"
+                                    +"where dias like '%%' \n" /*para Buscar Dias repetidos, hay que verificar la parte de los traslapes*/
+                                    +"order by asignatura;";
+                                  /* "SELECT horario.idHorario, claveAsig as clave, nombreAsig as asignatura, grupo, salon,  Profesor.folio as folio,\n"
                                   + "concat(Profesor.titulo,' ',Profesor.nombre,' ',Profesor.apPatern,' ',Profesor.apMatern) as profesor,\n"
                                   + "concat(horaEntrada,' - ',horaSalida) as horario, dias\n"
                                   + "FROM asignaturaxhorario\n"
@@ -168,22 +202,21 @@ public class HorarioDAO{
                                   + "left outer join salon on salon.idSalon = horario.idSalon\n"
                                   + "right outer join horariocomp on horario.idHorario = horariocomp.idHorario\n"
                                   + "WHERE dias LIKE '%%'\n" //para Buscar Dias repetidos, hay que verificar la parte de los traslapes
-                                  + "order by asignatura;\n";
+                                  + "order by asignatura;\n";*/
                         vista = orden.executeQuery(query);
 			int pos = 0;
 			//segun yo, aqui se debe de acomodar a como quieren que salga en iReport D: pero no sale
 			while (vista.next()){
 				horarios[pos][0] = vista.getString("Horario");
 				horarios[pos][1] = vista.getString("Grupo");
-				horarios[pos][2] = vista.getString("Tipo");
-				horarios[pos][3] = vista.getString("Salon");
-				horarios[pos][4] = vista.getString("Cupo");
-				horarios[pos][5] = vista.getString("Vacante");
-				horarios[pos][6] = vista.getString("Dias");
-				horarios[pos][9] = vista.getString("Clave");
-				horarios[pos][10] = vista.getString("Asignatura");
-				horarios[pos][11] = vista.getString("Folio Profesor");
-                                horarios[pos][12] = vista.getString("Profesor");
+				horarios[pos][2] = vista.getString("Salon");
+				//horarios[pos][4] = vista.getString("Cupo");
+				horarios[pos][3] = vista.getString("Vacante");
+				horarios[pos][4] = obtenerDias(vista.getString("Dias"));
+				horarios[pos][5] = vista.getString("Clave");
+				horarios[pos][6] = vista.getString("Asignatura");
+				horarios[pos][7] = vista.getString("Folio Profesor");
+                                horarios[pos][8] = vista.getString("Profesor");
                                 pos++;
 			}
 		}catch (SQLException e){
@@ -195,39 +228,42 @@ public class HorarioDAO{
 		return horarios;
 	}
         
-        public static ArrayList<String> obtenerDias(){
-            ArrayList<String> dias = new ArrayList<>();    //define el arreglo
-		String query;				//cadena que espeficica la query
-				
-		try {
-		        	
-                    conexion = ConexionBD.getConexion();	//obtiene conexión (nunca la crea aquí)
+        public static String obtenerDias(String dias){
+            
+            String arregloDias[] = {};
+            int numDias[] = {};
+            String diasTotales = "";
 
-                    orden = conexion.createStatement();	//crea objeto instrucción
+            arregloDias = dias.split("");
 
-                    query = "SELECT dias FROM horarioReal\n"+
-                            "ORDER BY idHorario;";		//query para contar profesores
-                    vista = orden.executeQuery(query);							//ejecuta query
-		    
-                    int pos = 0;
-                    
-                    while (vista.next()) {			//recorre todos los renglones
+            String delimiter = "";
 
-                        dias.add(vista.getString(1));
-                        
-		    }
-		    //captura excepciones
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Error al leer los Datos: " + e.getMessage(), 
-						"Error", JOptionPane.ERROR_MESSAGE);
-		} finally {
-				
-			ConexionBD.cerrarConexion();
-		}
-		
-		return dias;	
+
+            for(int i = 0; i < arregloDias.length; i ++){
+
+              switch(Integer.parseInt(arregloDias[i])){
+
+                case 1 :	diasTotales+="Lunes"+delimiter;
+                        break;
+                case 2 :	diasTotales+=delimiter+"Martes";
+                        break;
+                case 3 :	diasTotales+=delimiter+"Miercoles";
+                        break;
+                case 4 :	diasTotales+=delimiter+"Jueves";	
+                        break;
+                case 5 :	diasTotales+=delimiter+"Viernes";
+                        break;
+                case 6 :	diasTotales+=delimiter+"Sabado";
+                        break;
+                default : 	
+                        break;
+              }
+
+              delimiter = " - ";
+            }
+            return diasTotales;
         }
-        
+                
         /*
         public static int validarHorario(Horario hr){
             int traslape = 0;
