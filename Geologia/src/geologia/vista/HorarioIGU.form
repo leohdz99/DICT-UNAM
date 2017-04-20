@@ -23,14 +23,19 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jInternalFrame1" min="-2" max="-2" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jInternalFrame1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="jInternalFrame1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <EmptySpace pref="25" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -116,11 +121,11 @@
                           <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jScrollPane1" min="-2" pref="853" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                          <Component id="jScrollPane1" min="-2" pref="704" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="31" max="32767" attributes="0"/>
+                  <EmptySpace pref="23" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -168,8 +173,8 @@
                   <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="344" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" min="-2" pref="226" max="-2" attributes="0"/>
+                  <EmptySpace min="0" pref="62" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -364,11 +369,15 @@
             <Component class="javax.swing.JTable" name="jTable1">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="4" rowCount="4">
+                  <Table columnCount="8" rowCount="10">
                     <Column editable="true" title="Title 1" type="java.lang.Object"/>
                     <Column editable="true" title="Title 2" type="java.lang.Object"/>
                     <Column editable="true" title="Title 3" type="java.lang.Object"/>
                     <Column editable="true" title="Title 4" type="java.lang.Object"/>
+                    <Column editable="true" title="Title 5" type="java.lang.Object"/>
+                    <Column editable="true" title="Title 6" type="java.lang.Object"/>
+                    <Column editable="true" title="Title 7" type="java.lang.Object"/>
+                    <Column editable="true" title="Title 8" type="java.lang.Object"/>
                   </Table>
                 </Property>
               </Properties>

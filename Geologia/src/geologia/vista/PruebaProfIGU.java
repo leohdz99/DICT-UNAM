@@ -19,8 +19,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
 
-public class ProfesorIGU extends JInternalFrame {
-    private static ProfesorIGU ventana;		//define un objeto de esta clase para que sólo exista un objeto de ella
+public class PruebaProfIGU extends JInternalFrame {
+    private static PruebaProfIGU ventana;		//define un objeto de esta clase para que sólo exista un objeto de ella
 						//(patrón singleton) para usar este objeto se crea el método getVentana()
 	
 	
@@ -47,7 +47,7 @@ public class ProfesorIGU extends JInternalFrame {
         private String semestre;
         
 	//constructor
-	private ProfesorIGU (){
+	private PruebaProfIGU (){
 		
                 super("*** Profesores ***", false, true, false, true);
                 		                             
@@ -209,10 +209,10 @@ public class ProfesorIGU extends JInternalFrame {
 	
 
 	
-	public static ProfesorIGU getVentana(){
+	public static PruebaProfIGU getVentana(){
 					
 		if(ventana == null){				//si no se ha creado por única vez
-			ventana = new ProfesorIGU();		//se crea
+			ventana = new PruebaProfIGU();		//se crea
 		}
 		
 		return ventana;					

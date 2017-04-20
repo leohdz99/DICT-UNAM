@@ -16,7 +16,7 @@ import geologia.vista.PruebaHIGU;
 import geologia.vista.ConHorarioIGU;
 import geologia.vista.ConProfesorIGU;
 import geologia.vista.MenuPrincipalIGU;
-import geologia.vista.ProfesorIGU;
+import geologia.vista.PruebaProfIGU;
 import java.beans.PropertyVetoException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,7 +49,7 @@ public class MenuPrincipalControl implements ActionListener{	//sólo implementa 
                                                           
                                                           
                                                             break;
-                    case "Profesores"                   : ventana = ProfesorIGU.getVentana(); 
+                    case "Profesores"                   : ventana = PruebaProfIGU.getVentana(); 
                                                           comprobarVentana(ventana);
                                                             break;
                     case "Horario"			: ventanaCon = ConHorarioIGU.getConVentana();	//obtiene ventana de Horario
