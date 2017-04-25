@@ -148,15 +148,16 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
             case "Cancelar": ventana.limpiar();
                 break;
         }
-        
+        /*
         if (e.getSource() == ventana.getJcSalon()){
             buscarSalon();
         }
+        */
     }
     
     
     public void guardar(){
-        
+        /*
         if (!validador.vaildarComboBox(ventana.getJcAsignatura())){
             JOptionPane.showMessageDialog(null, "Falta la Asignatura", 
                     "advertencia", JOptionPane.ERROR_MESSAGE);
@@ -225,7 +226,7 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
             }
             //ventana.limpiar();
         }
-        
+        */
         
         
     }
@@ -252,7 +253,7 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
     }
     
    public void buscarSalon(){
-        
+        /*
         String salon =  ventana.getJcSalon().getSelectedItem().toString();
         JTable tabla = ventana.getTblLista();
         
@@ -271,7 +272,7 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
                 srtSalones.setRowFilter(modeloFiltro);			//especifica el filtro para el sorter
     
 
-        
+      */  
     }
 
 
@@ -282,6 +283,7 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        /*
         JTable tabla = ventana.getTblLista();										//obtiene la tabla
         int renglon = tabla.getSelectedRow();									//obtiene renglón seleccinado
         ventana.getTxtHoraE().setText("");
@@ -291,6 +293,7 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
         ventana.getJcSalon().setSelectedItem((String) (tabla.getValueAt(renglon, 3)));
         ventana.getJcAsignatura().setSelectedItem((String)(tabla.getValueAt(renglon, 10)));
         ventana.getJcNombreProf().setSelectedItem((String)(tabla.getValueAt(renglon, 12)));
+        */
     }
 
     @Override
