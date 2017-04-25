@@ -54,7 +54,7 @@ public class PruebaProfIGU extends JInternalFrame {
 		addBxVerticalPrincipal();//crea y agrega el panel principal con todos los componentes
 		
 		//setEventos();	//define la clase controladora para los componentes
-		setSize(500, 600);
+		setSize(500, 700);
                 
                 
 	}

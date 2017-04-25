@@ -28,7 +28,7 @@ import javax.swing.table.*;
 
 public class PruebaHIGU extends JInternalFrame {
     
-    //define un objeto de esta clase para que sólo exista un objeto de ella
+   //define un objeto de esta clase para que sólo exista un objeto de ella
     //(patrón singleton) para usar este objeto se crea el método getVentana()
     private static PruebaHIGU ventana;	
     
@@ -36,9 +36,13 @@ public class PruebaHIGU extends JInternalFrame {
     private HorarioControl control;
     
     //Declaración de los componetes de la ventana
+    
+    //Botones
     private JButton btnCancelar;
     private JButton btnGuardar;
     private JButton btnModificar;
+    
+    // ComboBoxes
     private JComboBox cbAsignatura;
     private JComboBox cbHrsE;
     private JComboBox cbHrsS;
@@ -46,15 +50,18 @@ public class PruebaHIGU extends JInternalFrame {
     private JComboBox cbMinS;
     private JComboBox cbProfesor;
     private JComboBox cbSalon;
+    
+    //CheckBoxes
     private JCheckBox ckJueves;
     private JCheckBox ckLunes;
     private JCheckBox ckMartes;
     private JCheckBox ckMiercoles;
     private JCheckBox ckSabado;
     private JCheckBox ckViernes;
+    
+    //Label
     private JLabel jLabel1;
     private JLabel jLabel2;
-    private JScrollPane scTabla;
     private JLabel lbAsignatura;
     private JLabel lbDias;
     private JLabel lbEdicion;
@@ -65,13 +72,19 @@ public class PruebaHIGU extends JInternalFrame {
     private JLabel lbLista;
     private JLabel lbProfesor;
     private JLabel lbSalon;
+    
+    //Tabla
+    private JScrollPane scTabla;
     private JTable tbLista;
+    
+    //TextFields
     private JTextField txGrupo;
     
     
     public PruebaHIGU(){
-        super("***Horarios***", true, true, true, true);
+        super("***Horarios***", false, true, false, true);
         inicializarComp();
+        propiedadesV();
         agregarEtiquetas();
         agregarCombo();
         agregarCheck();
@@ -80,6 +93,12 @@ public class PruebaHIGU extends JInternalFrame {
         establecerLayout();
         
     }
+    
+    //Metodo que asigna propiedades a la ventana
+    private void propiedadesV(){
+        setSize(1000, 700);
+    }
+    
     
     // Metodo para creación del objeto (Patrón Singleton).
     public static PruebaHIGU getVentana(){
@@ -130,7 +149,7 @@ public class PruebaHIGU extends JInternalFrame {
     
     
     //Metodo para agregar los componentes de etiquetas a la ventana
-    public void agregarEtiquetas(){
+    private void agregarEtiquetas(){
         lbEdicion.setText("Edición del Horario");
         lbAsignatura.setText("Asignatura:");
         lbGrupo.setText("Grupo:");
@@ -142,10 +161,12 @@ public class PruebaHIGU extends JInternalFrame {
         jLabel1.setText(":");
         jLabel2.setText(":");
         lbDias.setText("Seleccione los Días");
+        lbHoraE.setText("Entrada:");
+        lbHoraS.setText("Salida:");
     }
     
     // Metodo para agregar la tabla a la ventana
-    public void agregarTabla(){
+    private void agregarTabla(){
         
         tbLista.setModel(new DefaultTableModel(
                new Object [][] {
@@ -178,10 +199,12 @@ public class PruebaHIGU extends JInternalFrame {
                 false, false, false, false, false, false, false, false
             };
 
+            @Override
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
 
+            @Override
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
@@ -191,6 +214,16 @@ public class PruebaHIGU extends JInternalFrame {
         tbLista.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         tbLista.getTableHeader().setReorderingAllowed(false);
         scTabla.setViewportView(tbLista);
+        
+        
+        tbLista.getColumnModel().getColumn(0).setPreferredWidth(50);	//indica tamaño de columna 0
+	tbLista.getColumnModel().getColumn(1).setPreferredWidth(142);
+        tbLista.getColumnModel().getColumn(2).setPreferredWidth(50);
+        tbLista.getColumnModel().getColumn(3).setPreferredWidth(50);
+        tbLista.getColumnModel().getColumn(4).setPreferredWidth(200);
+        tbLista.getColumnModel().getColumn(5).setPreferredWidth(100);
+        tbLista.getColumnModel().getColumn(6).setPreferredWidth(100);
+        tbLista.getColumnModel().getColumn(7).setPreferredWidth(100);
         
         if (tbLista.getColumnModel().getColumnCount() > 0) {
             tbLista.getColumnModel().getColumn(0).setResizable(false);
@@ -207,7 +240,7 @@ public class PruebaHIGU extends JInternalFrame {
     
     // Metodo para establecer el layout de la ventana y cargarla.
     // Para la ventana se utiliza el GroupLayout
-    public void establecerLayout(){
+    private void establecerLayout(){
         javax.swing.GroupLayout HorarioIGULayout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(HorarioIGULayout);
         HorarioIGULayout.setHorizontalGroup(
@@ -238,9 +271,9 @@ public class PruebaHIGU extends JInternalFrame {
                             .addComponent(btnGuardar, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGroup(HorarioIGULayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(HorarioIGULayout.createSequentialGroup()
-                                .addGap(28, 28, 28)
+                                .addGap(30 , 30, 30)
                                 .addComponent(btnModificar)
-                                .addGap(26, 26, 26)
+                                .addGap(30, 30, 30)
                                 .addComponent(btnCancelar))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HorarioIGULayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -251,9 +284,7 @@ public class PruebaHIGU extends JInternalFrame {
                                 .addGroup(HorarioIGULayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(lbEdicion)
                                     .addComponent(ckLunes)
-                                    .addComponent(lbHoraE)
-                                    .addComponent(lbHoraS)
-                                    .addComponent(lbLista, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(lbLista, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(HorarioIGULayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(HorarioIGULayout.createSequentialGroup()
@@ -269,10 +300,14 @@ public class PruebaHIGU extends JInternalFrame {
                                     .addGroup(HorarioIGULayout.createSequentialGroup()
                                         .addGroup(HorarioIGULayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, HorarioIGULayout.createSequentialGroup()
+                                                .addComponent(lbHoraS, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)    
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(cbHrsS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                             .addGroup(HorarioIGULayout.createSequentialGroup()
+                                                .addComponent(lbHoraE, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(cbHrsE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jLabel2)))
@@ -282,12 +317,12 @@ public class PruebaHIGU extends JInternalFrame {
                                             .addComponent(cbMinS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                     .addGroup(HorarioIGULayout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addComponent(scTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 704, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(scTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(23, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HorarioIGULayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(lbHora)
-                .addGap(262, 262, 262))
+                .addGap(200, 200, 200))
         );
         HorarioIGULayout.setVerticalGroup(
             HorarioIGULayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -336,21 +371,21 @@ public class PruebaHIGU extends JInternalFrame {
                 .addGap(30, 30, 30)
                 .addComponent(lbLista)
                 .addGap(18, 18, 18)
-                .addComponent(scTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 278, Short.MAX_VALUE))
+                .addComponent(scTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 50, Short.MAX_VALUE))
         );
         
         pack();
     }
     
     
-    public void agregarBotones(){        
+    private void agregarBotones(){        
         btnGuardar.setText("Guardar");
         btnModificar.setText("Modificar");
         btnCancelar.setText("Cancelar");
     }
     
-    public void agregarCombo(){
+    private void agregarCombo(){
         cbAsignatura.setModel(new DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbSalon.setModel(new DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbProfesor.setModel(new DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));

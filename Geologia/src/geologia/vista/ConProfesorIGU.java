@@ -47,7 +47,7 @@ public class ConProfesorIGU extends JInternalFrame{
          addBxVerticalPrincipal();//crea y agrega el panel principal con todos los componentes
 		
 		//setEventos();	//define la clase controladora para los componentes
-		setSize(1000, 700);
+		setSize(800, 600);
                 show();
     }
     
