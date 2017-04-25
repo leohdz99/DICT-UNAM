@@ -28,9 +28,11 @@ import geologia.modelo.dao.HorarioRealDAO;
 import geologia.modelo.dao.HorarioCompDAO;
 import geologia.modelo.dto.Horario;
 import geologia.modelo.dto.HorarioReal;
+import geologia.modelo.dto.HorarioComp;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import geologia.vista.PruebaHIGU;
+//import geologia.vista.PruebaHIGU;
+import geologia.vista.HorarioIGU;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -53,9 +55,9 @@ import javax.swing.event.ListSelectionListener;
 public class HorarioControl extends KeyAdapter implements ActionListener, 
         DocumentListener,MouseListener, ListSelectionListener, ItemListener{
 
-    private PruebaHIGU ventana;
+    private HorarioIGU ventana;
 
-    public HorarioControl(PruebaHIGU ventana) {
+    public HorarioControl(HorarioIGU ventana) {
         this.ventana = ventana;
     }
     
