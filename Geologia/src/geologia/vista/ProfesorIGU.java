@@ -1,3 +1,5 @@
+package geologia.vista;
+
 /*
  * Copyright (C) 2017 javigen
  *
