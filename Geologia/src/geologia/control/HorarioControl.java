@@ -157,6 +157,38 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
     
     
     public void guardar(){
+        
+        /*
+        - Validar e insertar:
+            Campos
+            Validar que no haya horarios repetidos
+            Que se cumplan las horas establecidas por la asignatura
+            Si (No se cumple){
+                VentanaEmergente preguntando que hacer
+                    -- Cancelar
+                    -- AgregarComplmentario
+                switch (opciones){
+                    case AgregarComplementario: Inserta el real
+                                                Recupear el ultimo id
+                                                Validar el horario complementario
+                                                
+        
+                    case Cancelar:  Regresa a la interfaz
+                                    Preguntar si queire modificar el horario definido
+                                    Si (no quiere){
+                                        limpia la pantata
+                                    } en caso contrario {
+                                        regresa si borrar nada 
+                                    }
+                                                 
+                }    
+            ] en caso contrario {
+                Inserta el real.
+            }
+        
+        */
+        
+        
         /*
         if (!validador.vaildarComboBox(ventana.getJcAsignatura())){
             JOptionPane.showMessageDialog(null, "Falta la Asignatura", 

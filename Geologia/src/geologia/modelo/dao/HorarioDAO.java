@@ -150,7 +150,7 @@ public class HorarioDAO{
 
 			horarios = new Object[totalTuplas][13];
                         
-                        query =     "select horario.idHorario, claveAsig as clave, nombreAsig as asignatura, grupo, salon,  Profesor.folio as folio,"
+                        query =     "select  claveAsig as clave, nombreAsig as asignatura, grupo, salon,  Profesor.folio as folio,"
                                     +"concat(Profesor.titulo,' ',Profesor.nombre,' ',Profesor.apPatern,' ',Profesor.apMatern) as profesor,"
                                     +"concat(horaEntrada,' - ',horaSalida) as horario, dias"
                                     +" from asignaturaxhorario\n"
@@ -159,14 +159,14 @@ public class HorarioDAO{
                                     +"\nleft outer join "
                                     +"horario on asignaturaxhorario.idHorario = horario.idHorario"
                                     +"\nleft outer join "
-                                    +"profesor on profesor.idProfesor = horario.idHorario"
+                                    +"profesor on profesor.idProfesor = horario.idProfesor"
                                     +"\nleft outer join "
                                     +"salon on salon.idSalon = horario.idSalon"
                                     +"\nleft outer join "
-                                    +"horarioreal on horario.idHorario = horarioreal.idHorario"
+                                    +"horarioReal on horario.idHorario as h1 = horarioReal.idHorario"
                                     +"\nwhere dias like '%%'\n" 
                                     +"union\n"
-                                    +"select horario.idHorario, claveAsig as clave, nombreAsig as asignatura, grupo, salon,  Profesor.folio as folio,"
+                                    +"select claveAsig as clave, nombreAsig as asignatura, grupo, salon,  Profesor.folio as folio,"
                                     +"concat(Profesor.titulo,' ',Profesor.nombre,' ',Profesor.apPatern,' ',Profesor.apMatern) as profesor,"
                                     +"concat(horaEntrada,' - ',horaSalida) as horario, dias\n"
                                     +"from asignaturaxhorario\n"
@@ -175,13 +175,11 @@ public class HorarioDAO{
                                     +"\nleft outer join "
                                     +"horario on asignaturaxhorario.idHorario = horario.idHorario\n"
                                     +"left outer join "
-                                    +"profesor on profesor.idProfesor = horario.idHorario\n"
+                                    +"profesor on profesor.idProfesor = horario.idProfesor"
                                     +"left outer join "
                                     +"salon on salon.idSalon = horario.idSalon\n"
                                     +"right outer join "
-                                    +"horariocomp on horario.idHorario = horariocomp.idHorario\n"
-                                    +"where dias like '%%' \n" /*para Buscar Dias repetidos, hay que verificar la parte de los traslapes*/
-                                    +"order by asignatura;";
+                                    +"horariocomp on horario.idHorario as h2 = horariocomp.idHorario;";                              ;
                                   /* "SELECT horario.idHorario, claveAsig as clave, nombreAsig as asignatura, grupo, salon,  Profesor.folio as folio,\n"
                                   + "concat(Profesor.titulo,' ',Profesor.nombre,' ',Profesor.apPatern,' ',Profesor.apMatern) as profesor,\n"
                                   + "concat(horaEntrada,' - ',horaSalida) as horario, dias\n"

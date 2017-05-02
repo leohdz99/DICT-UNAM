@@ -80,7 +80,7 @@ public class PruebaHIGU extends JInternalFrame {
     //TextFields
     private JTextField txGrupo;
     
-    
+    //Constructor
     public PruebaHIGU(){
         super("***Horarios***", false, true, false, true);
         inicializarComp();

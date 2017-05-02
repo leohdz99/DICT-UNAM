@@ -142,7 +142,7 @@ public class ConHorarioIGU extends JInternalFrame{
 	}
         public void setTabla() {
 		
-		String titulos[] = {"Horario", "Grupo","Tipo","Salon","Cupo","Vacante","Dia 1","Dia 2","Dia 3","Clave", "Asignatura", "Folio Profesor","Profesor"  };				//títulos de la tabla
+		String titulos[] = {"Horario", "Grupo","Salon","Dias","Clave", "Asignatura", "Folio Profesor","Profesor" };				//títulos de la tabla
 		Object datos[][] = HorarioDAO.obtenerHorarios("","");					//obtiene todos los datos de la base de datos
 
 		final DefaultTableModel modeloTabla = new DefaultTableModel(){	//crea modelo de tabla
@@ -170,11 +170,7 @@ public class ConHorarioIGU extends JInternalFrame{
                 tblLista.getColumnModel().getColumn(5).setPreferredWidth(40);
                 tblLista.getColumnModel().getColumn(6).setPreferredWidth(40);
                 tblLista.getColumnModel().getColumn(7).setPreferredWidth(40);
-                tblLista.getColumnModel().getColumn(8).setPreferredWidth(40);
-                tblLista.getColumnModel().getColumn(9).setPreferredWidth(60);
-                tblLista.getColumnModel().getColumn(10).setPreferredWidth(250);
-                tblLista.getColumnModel().getColumn(11).setPreferredWidth(60);
-                tblLista.getColumnModel().getColumn(12).setPreferredWidth(300);
+                
                 
         }
     
