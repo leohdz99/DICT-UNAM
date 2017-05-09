@@ -13,8 +13,6 @@ package geologia.vista;
 
 import geologia.control.HorarioControl;
 import geologia.modelo.dao.AsignaturaDAO;
-import geologia.modelo.dao.HorarioRealDAO;
-import geologia.modelo.dao.HorarioCompDAO;
 import geologia.modelo.dao.HorarioDAO;
 import geologia.modelo.dao.ProfesorDAO;
 import geologia.modelo.dao.SalonDAO;
@@ -86,9 +84,9 @@ public class PruebaHIGU extends JInternalFrame {
         inicializarComp();
         propiedadesV();
         agregarEtiquetas();
-        agregarCombo();
-        agregarCheck();
-        agregarBotones();
+        establecerCombo();
+        establecerCheck();
+        establecerBotones();
         agregarTabla();
         establecerLayout();
         
@@ -146,7 +144,6 @@ public class PruebaHIGU extends JInternalFrame {
         lbHoraS = new JLabel();
         
     }
-    
     
     //Metodo para agregar los componentes de etiquetas a la ventana
     private void agregarEtiquetas(){
@@ -378,25 +375,28 @@ public class PruebaHIGU extends JInternalFrame {
         pack();
     }
     
-    
-    private void agregarBotones(){        
+    // Establece los botones
+    private void establecerBotones(){        
         btnGuardar.setText("Guardar");
         btnModificar.setText("Modificar");
         btnCancelar.setText("Cancelar");
     }
     
-    private void agregarCombo(){
-        cbAsignatura.setModel(new DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cbSalon.setModel(new DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cbProfesor.setModel(new DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+    //Establece los ComboBoxes
+    private void establecerCombo(){
+        cbAsignatura.setModel(new DefaultComboBoxModel<>(new String[] {}));
+        cbSalon.setModel(new DefaultComboBoxModel<>(new String[] {}));
+        cbProfesor.setModel(new DefaultComboBoxModel<>(new String[] {}));
         
-        cbHrsE.setModel(new DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cbMinE.setModel(new DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbHrsE.setModel(new DefaultComboBoxModel<>(new String[] {}));
+        cbMinE.setModel(new DefaultComboBoxModel<>(new String[] {}));
         
-        cbHrsS.setModel(new DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cbMinS.setModel(new DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbHrsS.setModel(new DefaultComboBoxModel<>(new String[] {}));
+        cbMinS.setModel(new DefaultComboBoxModel<>(new String[] {}));
     }
-    private void agregarCheck(){     
+    
+    //Establece como se van a ver los CheckBoxes los 
+    private void establecerCheck(){     
         ckLunes.setText("Lunes");
         ckMartes.setText("Martes");
         ckMiercoles.setText("Miércoles");

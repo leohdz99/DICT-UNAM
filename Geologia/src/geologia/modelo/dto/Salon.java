@@ -11,31 +11,19 @@ package geologia.modelo.dto;
  */
 public class Salon {
     
-    private int idSalon;
     private String salon;
-    private int cupoAsignatura; // Nota en la base de datos se llama cupoAsignatura
-    private int vacanteAsignatura;// nota las variables cupoAsignatura y vacanteAsignatura estan en duda de si se ponen en asignatura o en salon
+    private int capacidad;
     
     public Salon(){
-        
+        salon = null;
+        capacidad = 0;
     }
-    
-    public Salon(int idSalon, String salon, int cupoAsignatura, int vacanteAsignatura){
-        
-        this.idSalon = idSalon;
+
+    public Salon(String salon, int capacidad) {
         this.salon = salon;
-        this.cupoAsignatura = cupoAsignatura;
-        this.vacanteAsignatura = vacanteAsignatura;
+        this.capacidad = capacidad;
     }
-    
-    
-    public int getIdSalon() {
-        return idSalon;
-    }
-    public void setIdSalon(int idSalon) {
-        this.idSalon = idSalon;
-    }
-    
+
     public String getSalon() {
         return salon;
     }
@@ -43,48 +31,15 @@ public class Salon {
     public void setSalon(String salon) {
         this.salon = salon;
     }
-    
-    public int getCupoAsignatura() {
-        return cupoAsignatura;
+
+    public int getCapacidad() {
+        return capacidad;
     }
 
-    public void setCupoAsignatura(int cupoAsignatura) {
-        this.cupoAsignatura = cupoAsignatura;
+    public void setCapacidad(int capacidad) {
+        this.capacidad = capacidad;
     }
     
-     public int getVacanteAsignatura() {
-        return vacanteAsignatura;
-    }
-
-    public void setVacanteAsignatura(int vacanteAsignatura) { // este get y set ya existe en Asignatura
-        this.vacanteAsignatura = vacanteAsignatura;
-    }
     
-    @Override
-    public String toString() {
-        return  "idSalon: " + idSalon +
-                ", salon: '" + salon + '\'' +
-                ", cupoSalon: '" + cupoAsignatura + '\'' +
-                ", vacanteAsignatura: " + vacanteAsignatura;
-    }
-    
-    @Override
-    public boolean equals(Object elemento) {
-        if(elemento == null){
-            return  false;
-        }else{
-            if (!(elemento instanceof Salon)){
-                return  false;
-            }else{
-                Salon salon = (Salon) elemento;
-                if (idSalon == salon.idSalon && salon.equals(salon.salon)&& cupoAsignatura == salon.cupoAsignatura && 
-                        vacanteAsignatura == salon.vacanteAsignatura){
-                    return  true;
-                }else{
-                    return false;
-                }
-            }
-        }
-    }
     
 }

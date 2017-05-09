@@ -168,8 +168,8 @@ public class PruebaProfIGU extends JInternalFrame {
 	
 	public void setTabla() {
 		
-		String titulos[] = {"RFC", "Folio","Profesor","Activo"};				//títulos de la tabla
-		Object datos[][] = ProfesorDAO.obtenerProfesor("");					//obtiene todos los datos de la base de datos
+		String titulos[] = {"RFC", "Profesor","Profesor","Activo"};				//títulos de la tabla
+		Object datos[][] = ProfesorDAO.filtrarProfesor("A");					//obtiene todos los datos de la base de datos
 
 		final DefaultTableModel modeloTabla = new DefaultTableModel(){	//crea modelo de tabla
 			

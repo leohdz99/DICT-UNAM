@@ -5,49 +5,32 @@
  */
 package geologia.modelo.dto;
 
-import java.sql.Time;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.Formatter;
-import javax.swing.JOptionPane;
-import java.math.BigDecimal;
-
 /**
  *
  * @author javierGenico
  */
 public class Horario {
         
-    private int idHorario;
     private String grupo;
-    private int idSalon;
-    private int idProfesor;
-
+    private double hrEnt;
+    private double hrSal;
+    private int dias;
     
     
-
-    public Horario() {
+    public Horario(){
+        grupo = null;
+        hrEnt = 0.0;
+        hrSal = 0.0;
+        dias = 0;
     }
-    
-    public Horario(int idHorario, String grupo, int idSalon, int idProfesor ) {
-        
-        this.idHorario = idHorario;
+
+    public Horario(String grupo, double hrEnt, double hrSal, int dias) {
         this.grupo = grupo;
-        this.idSalon = idSalon;
-        this.idProfesor = idProfesor;
-      
+        this.hrEnt = hrEnt;
+        this.hrSal = hrSal;
+        this.dias = dias;
     }
 
-    public int getIdHorario() {
-        return idHorario;
-    }
-
-    public void setIdHorario(int idHorario) {
-        this.idHorario = idHorario;
-    }
-    
     public String getGrupo() {
         return grupo;
     }
@@ -55,49 +38,32 @@ public class Horario {
     public void setGrupo(String grupo) {
         this.grupo = grupo;
     }
-    public int getIdSalon() {
-        return idSalon;
+
+    public double getHrEnt() {
+        return hrEnt;
     }
 
-    public void setIdSalon(int idSalon) {
-        this.idSalon = idSalon;
+    public void setHrEnt(double hrEnt) {
+        this.hrEnt = hrEnt;
     }
 
-    public int getIdProfesor() {
-        return idProfesor;
+    public double getHrSal() {
+        return hrSal;
     }
 
-    public void setIdProfesor(int idProfesor) {
-        this.idProfesor = idProfesor;
-    } 
+    public void setHrSal(double hrSal) {
+        this.hrSal = hrSal;
+    }
 
-     public String toString(){
-        return "idHorario: " + idHorario +
-                ", grupo: '" + grupo + '\'' +
-                ", idSalon: " + idSalon + '\''+
-                ", idProfesor: '" + idProfesor;
-                
-                           
+    public int getDias() {
+        return dias;
+    }
+
+    public void setDias(int dias) {
+        this.dias = dias;
     }
     
-     @Override
-    public boolean equals(Object elemento) {
-        if(elemento == null){
-            return  false;
-        }else{
-            if (!(elemento instanceof Horario)){
-                return  false;
-            }else{
-                Horario horario = (Horario) elemento;
-                if (idHorario == horario.idHorario && grupo.equals(horario.grupo) && 
-                    idSalon == horario.idSalon && horario.idProfesor == idProfesor){
-                    return  true;
-                }else{
-                    return false;
-                }
-            }
-        }
-    }
+    
 }
 
 

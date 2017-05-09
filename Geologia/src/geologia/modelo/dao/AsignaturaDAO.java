@@ -22,6 +22,9 @@ public class AsignaturaDAO{
 	private static Statement sentencia;
 	private static ResultSet tuplas;
 	private static Connection conexion;
+        
+       
+        
 
 	/**
 	 * obtiene todos las Asignaturas que coincidan con el nombre de la asignatura pasado como parámetro

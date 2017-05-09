@@ -143,7 +143,7 @@ public class ConHorarioIGU extends JInternalFrame{
         public void setTabla() {
 		
 		String titulos[] = {"Horario", "Grupo","Salon","Dias","Clave", "Asignatura", "Folio Profesor","Profesor" };				//títulos de la tabla
-		Object datos[][] = HorarioDAO.obtenerHorarios("","");					//obtiene todos los datos de la base de datos
+		Object datos[][] = null;//HorarioDAO.obtenerHorarios("","");					//obtiene todos los datos de la base de datos
 
 		final DefaultTableModel modeloTabla = new DefaultTableModel(){	//crea modelo de tabla
 			
@@ -186,7 +186,7 @@ public class ConHorarioIGU extends JInternalFrame{
     public void llenarCB() {
         jcbMostrar.removeAllItems(); //Vaciamos el JComboBox
         ArrayList<String> resultat;
-        resultat = SalonDAO.obtenerNombreSalon();//La consulta tiene que retornar un ArrayList
+        resultat = null; //SalonDAO.obtenerNombreSalon();//La consulta tiene que retornar un ArrayList
         jcbMostrar.addItem("");
         for(int i=0; i < resultat.size();i++){
             jcbMostrar.addItem(resultat.get(i));

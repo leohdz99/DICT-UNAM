@@ -17,12 +17,10 @@
 package geologia.vista;
 
 import javax.swing.JInternalFrame;
-import geologia.modelo.dao.HorarioDAO;
 import geologia.modelo.dao.ProfesorDAO;
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.border.TitledBorder;
-import geologia.modelo.dao.SalonDAO; 
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
@@ -123,7 +121,7 @@ public class ConProfesorIGU extends JInternalFrame{
         public void setTabla() {
 		
 		String titulos[] = {"RFC","Profesor", "Folio","Activo"};				//títulos de la tabla
-		Object datos[][] = ProfesorDAO.obtenerProfesor("");					//obtiene todos los datos de la base de datos
+		Object datos[][] = ProfesorDAO.filtrarProfesor("");					//obtiene todos los datos de la base de datos
 
 		final DefaultTableModel modeloTabla = new DefaultTableModel(){	//crea modelo de tabla
 			
@@ -160,7 +158,7 @@ public class ConProfesorIGU extends JInternalFrame{
      public void llenarCB() {
         jcbMostrar.removeAllItems(); //Vaciamos el JComboBox
         ArrayList<String> resultat;
-        resultat = ProfesorDAO.obtenerNombreProfesor("");//La consulta tiene que retornar un ArrayList
+        resultat = ProfesorDAO.obtenerNomProf();//La consulta tiene que retornar un ArrayList
 
         for(int i=0; i < resultat.size();i++){
             jcbMostrar.addItem(resultat.get(i));

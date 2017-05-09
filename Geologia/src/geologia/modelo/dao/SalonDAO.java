@@ -1,100 +1,104 @@
+/*
+ * Copyright (C) 2017 Javier Génico
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /**
- * SalonDAO: define todas las operaciones disponibles para acceder a la tabla de Salon en la BD
- * 				permite insertar, modificar, borrar, obtener todos los alumnos que cumplen con una 
- * 				condición en una matriz 
+ * SalonDAO: define todas las operaciones disponibles para acceder a 
+ *           la tabla de Salon en la BD.
+ *           Permite insertar, modificar, borrar, obtener todos los alumnos que 
+ *           cumplen con una condición en una matriz. 
  * @author <ul><li>Javier Genico</li></ul>
  * @version 1.0
  * @since   2016-12-09 
  */
 package geologia.modelo.dao;
 
-import java.sql.*;
-
 import javax.swing.JOptionPane;
 
-import geologia.modelo.ConexionBD;	//conexión de a la BD
-import geologia.modelo.dto.Salon;
+import geologia.modelo.ConexionGBD;
+
 import java.util.ArrayList;
 
+import org.neo4j.driver.v1.Driver;
+import org.neo4j.driver.v1.Record;
+import org.neo4j.driver.v1.Session;
+import org.neo4j.driver.v1.StatementResult;
+import org.neo4j.driver.v1.exceptions.Neo4jException;
+import org.neo4j.driver.v1.exceptions.SessionExpiredException;
+
 public class SalonDAO{
+    
+    // Varaibles
+    private static Driver conexion = null;
+    private static Session sesion = null;
+    private static StatementResult resultado = null;
+    private static Record registro = null;
 
-	private static PreparedStatement sentenciaPreparada;
-	private static Statement sentencia;
-	private static ResultSet tuplas;
-	private static Connection conexion;
-
-	
-	/**
-	 * obtiene todos los Salones que coincidan con el idSalon pasado como parámetro
-	 * @param idSalon- a buscar en la BD
-	 * @return una matriz con los registros de Salon en los renglones y separando los atributos en las columnas
-	 * 			se necesita para indicar los datos del modelo de datos de la JTable
-	 */
-
-	public static int getIdSalon(String salon){
-
-		int idSalon = 0;	//define matriz
-		int totalTuplas = 0;		//total de tuplas que regresa la query
-		String query;				//cadena que espeficica la query
-				
-		try {
-		        	
-                    conexion = ConexionBD.getConexion();	//obtiene conexión (nunca la crea aquí)
-
-                    sentencia = conexion.createStatement();	//crea objeto instrucción
-
-                    query = "SELECT idSalon FROM Salon " +
-	        		"WHERE salon like '%" + salon + "%'";		//query para contar profesores
-                    tuplas = sentencia.executeQuery(query);							//ejecuta query
-		        
-                    if(tuplas.next()){							//obtiene el primer renglon del resultado
-                        idSalon = tuplas.getInt("idSalon");
-                    }
-		    //captura excepciones
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Error al leer los alumnos " + e.getMessage(), 
-						"Error", JOptionPane.ERROR_MESSAGE);
-		} finally {
-				
-			ConexionBD.cerrarConexion();
-		}
-		
-		return idSalon;	//regresa la matriz		
-	}
+    
+    //MÉTODO PARA LISTAR EN EL SISTEMA
+    
+// <editor-fold defaultstate="collapsed" desc="Obtener Profesores">
+    public static ArrayList<String> obtenerSalones(){
         
-        public static ArrayList<String> obtenerNombreSalon(){
+        
+        conexion = ConexionGBD.obtenerConexion();
+        int pos = 0;
+        ArrayList<String> salones = null;
+        try {
+            sesion = conexion.session();
             
-                ArrayList<String> salones = new ArrayList<String>();    //define el arreglo
-		String query;				//cadena que espeficica la query
-				
-		try {
-		        	
-                    conexion = ConexionBD.getConexion();	//obtiene conexión (nunca la crea aquí)
-
-                    sentencia = conexion.createStatement();	//crea objeto instrucción
-
-                    query = "SELECT salon FROM Salon";		//query para contar profesores
-                    tuplas = sentencia.executeQuery(query);							//ejecuta query
-		    
-                    int post = 0;
+            try {
+                
+                // Aqui no ocupamos transacciones, puesto que estamos listando
+                // Traemos todos los registros de la Consulta;
+                resultado = sesion.run("MATCH(n:Salon)\n"
+                        + "RETURN n.salon as salon");
+                salones = new ArrayList<>();
+                
+                // Mientras existan registros
+                while (resultado.hasNext()) {
                     
-                    while (tuplas.next()) {			//recorre todos los renglones
-
-                        salones.add(tuplas.getString(1));
-                        
-		    }
-		    //captura excepciones
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Error al leer los alumnos " + e.getMessage(), 
-						"Error", JOptionPane.ERROR_MESSAGE);
-		} finally {
-				
-			ConexionBD.cerrarConexion();
-		}
-		
-		return salones;	//regresa el arreglo
+                    // Ttraemos el registro
+                    registro = resultado.next();
+                    
+                    //Imprimimos en consola
+                    salones.add(registro.get("salon").asString());
+                    pos ++;
+                }
+            } catch (Neo4jException nfje) {
+                System.out.println(nfje.getMessage());
+            }
+        } catch (SessionExpiredException see) {
+            JOptionPane.showMessageDialog(null, "Error al leer los salones: " + 
+                                            see.getMessage(), 
+                                            "Error", JOptionPane.ERROR_MESSAGE);
+        }catch (Neo4jException nfje){
+            JOptionPane.showMessageDialog(null, "Error al leer los salones: " + 
+                                            nfje.getMessage(), 
+                                            "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
             
+            //Cierra la Sesion
+            sesion.close();
+            
+            //Cierra la conexión
+            ConexionGBD.cerrarConexion();
         }
-	
+        
+        return salones;
+        
+    }// </editor-fold>
 }

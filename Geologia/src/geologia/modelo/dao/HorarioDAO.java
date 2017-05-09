@@ -17,27 +17,54 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import geologia.modelo.ConexionBD;
 import geologia.modelo.dto.Horario;
-import geologia.modelo.dto.HorarioReal;
-import geologia.modelo.dto.HorarioComp;
-import geologia.modelo.dao.ProfesorDAO;
-import geologia.modelo.dao.AsignaturaDAO;
-import geologia.modelo.dao.SalonDAO;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.lang.Math;
 
 
 public class HorarioDAO{
 
-	private static PreparedStatement sentencia;
-	private static Statement orden;
-	private static ResultSet vista;
-	private static Connection conexion;
+    private static PreparedStatement sentencia;
+    private static Statement orden;
+    private static ResultSet vista;
+    private static Connection conexion;
+        
+        
+    public static String obtenerDias(String dias){
 
- //*************INSERTAR****************
+        String arregloDias[] = {};
+        int numDias[] = {};
+        String diasTotales = "";
+        arregloDias = dias.split("");
+
+        String delimiter = "";
+
+
+        for(int i = 0; i < arregloDias.length; i ++){
+
+            switch(Integer.parseInt(arregloDias[i])){
+
+                case 1 :	diasTotales += "Lunes" + delimiter;
+                        break;
+                case 2 :	diasTotales += delimiter + "Martes";
+                        break;
+                case 3 :	diasTotales+=delimiter + "Miercoles";
+                        break;
+                case 4 :	diasTotales += delimiter + "Jueves";	
+                        break;
+                case 5 :	diasTotales  += delimiter + "Viernes";
+                        break;
+                case 6 :	diasTotales += delimiter + "Sabado";
+                        break;
+                default : 	
+                    break;
+          }
+
+          delimiter = " - ";
+        }
+        return diasTotales;
+    }
+}
+
+
+ /* INSERTAR****************
 
 	public static boolean insertar(Horario horario){
 		int constraint;
@@ -201,7 +228,7 @@ public class HorarioDAO{
                                   + "left outer join salon on salon.idSalon = horario.idSalon\n"
                                   + "right outer join horariocomp on horario.idHorario = horariocomp.idHorario\n"
                                   + "WHERE dias LIKE '%%'\n" //para Buscar Dias repetidos, hay que verificar la parte de los traslapes
-                                  + "order by asignatura;\n";*/
+                                  + "order by asignatura;\n";
                         vista = orden.executeQuery(query);
 			int pos = 0;
 			//segun yo, aqui se debe de acomodar a como quieren que salga en iReport D: pero no sale
@@ -226,42 +253,8 @@ public class HorarioDAO{
 		}
 		return horarios;
 	}
+*/
         
-        public static String obtenerDias(String dias){
-            
-            String arregloDias[] = {};
-            int numDias[] = {};
-            String diasTotales = "";
-
-            arregloDias = dias.split("");
-
-            String delimiter = "";
-
-
-            for(int i = 0; i < arregloDias.length; i ++){
-
-              switch(Integer.parseInt(arregloDias[i])){
-
-                case 1 :	diasTotales+="Lunes"+delimiter;
-                        break;
-                case 2 :	diasTotales+=delimiter+"Martes";
-                        break;
-                case 3 :	diasTotales+=delimiter+"Miercoles";
-                        break;
-                case 4 :	diasTotales+=delimiter+"Jueves";	
-                        break;
-                case 5 :	diasTotales+=delimiter+"Viernes";
-                        break;
-                case 6 :	diasTotales+=delimiter+"Sabado";
-                        break;
-                default : 	
-                        break;
-              }
-
-              delimiter = " - ";
-            }
-            return diasTotales;
-        }
                 
         /*
         public static int validarHorario(Horario hr){
@@ -320,6 +313,7 @@ public class HorarioDAO{
             return traslape;
         }
         */
+/*
         public static int verificarGrupos(Horario hr){
             int gruposRep = 0;
             
@@ -360,6 +354,7 @@ public class HorarioDAO{
         }
         
 }
+*/
  //*************BUSQUEDA / BUSCAR****************
         
 
@@ -440,6 +435,4 @@ public class PruebaJTable {
 		v.setVisible(true);
 		v.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-	}
-}
-*/
+	}*/

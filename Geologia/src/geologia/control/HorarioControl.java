@@ -24,10 +24,7 @@ import geologia.modelo.dao.AsignaturaDAO;
 import geologia.modelo.dao.HorarioDAO;
 import geologia.modelo.dao.ProfesorDAO;
 import geologia.modelo.dao.SalonDAO;
-import geologia.modelo.dao.HorarioRealDAO;
-import geologia.modelo.dao.HorarioCompDAO;
-import geologia.modelo.dto.Horario;
-import geologia.modelo.dto.HorarioReal;
+
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import geologia.vista.PruebaHIGU;

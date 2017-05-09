@@ -1,8 +1,20 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2017 Josué Hernández
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package geologia.modelo.dto;
 
 /**
@@ -11,128 +23,55 @@ package geologia.modelo.dto;
  */
 public class Profesor {
     
-    private int idProfesor;
-    private int folioProfesor;
-    private String tituloProfesor;
-    private String apPaterno;
-    private String apMaterno;
-    private String nombreProf;
+    private String folProf;
+    private String prof;
     private String rfc;
     private String activo;
-
-   
     
     public Profesor(){
-        
+        folProf = null;
+        prof = null;
+        rfc  = null;
+        activo = null;               
     }
-    public Profesor(int idProfesor, int folioProfesor, String tituloProfesor, String apPaterno, String apMaterno, 
-            String nombreProf, String rfc, String activo){
-        
-        this.idProfesor = idProfesor;
-        this.folioProfesor = folioProfesor;
-        this.tituloProfesor = tituloProfesor;
-        this.apPaterno = apPaterno;
-        this.apMaterno = apMaterno;
-        this.nombreProf = nombreProf;
+
+    public Profesor(String folProf, String prof, String rfc, String activo) {
+        this.folProf = folProf;
+        this.prof = prof;
         this.rfc = rfc;
         this.activo = activo;
-        
     }
 
-
-    public int getIdProfesor() {
-        return idProfesor;
+    public String getFolProf() {
+        return folProf;
     }
 
-    public int getFolioProfesor() {
-        return folioProfesor;
+    public void setFolProf(String folProf) {
+        this.folProf = folProf;
     }
 
-    public String getTituloProfesor() {
-        return tituloProfesor;
+    public String getProf() {
+        return prof;
     }
 
-    public String getApPaterno() {
-        return apPaterno;
-    }
-
-    public String getApMaterno() {
-        return apMaterno;
-    }
-
-    public String getNombreProf() {
-        return nombreProf;
+    public void setProf(String prof) {
+        this.prof = prof;
     }
 
     public String getRfc() {
         return rfc;
-    }
-    
-     public void setIdProfesor(int idProfesor) {
-        this.idProfesor = idProfesor;
-    }
-
-    public void setFolioProfesor(int folioProfesor) {
-        this.folioProfesor = folioProfesor;
-    }
-
-    public void setTituloProfesor(String tituloProfesor) {
-        this.tituloProfesor = tituloProfesor;
-    }
-
-    public void setApPaterno(String apPaterno) {
-        this.apPaterno = apPaterno;
-    }
-
-    public void setApMaterno(String apMaterno) {
-        this.apMaterno = apMaterno;
-    }
-
-    public void setNombreProf(String nombreProf) {
-        this.nombreProf = nombreProf;
     }
 
     public void setRfc(String rfc) {
         this.rfc = rfc;
     }
 
-      public String getActivo() {
+    public String getActivo() {
         return activo;
     }
-    
-     public void setActivo(String activo) {
+
+    public void setActivo(String activo) {
         this.activo = activo;
-    }
-    
-    public String toString(){
-        return "idProfesor: " + idProfesor +
-                ", folioProfesor: '" + folioProfesor + '\''+
-                ", tituloProfesor: '" + tituloProfesor + '\'' +
-                ", apPaterno: '" + apPaterno + '\'' +
-                ", apMaterno: '" + apMaterno + '\'' +
-                ", nombreProf: '" + nombreProf + '\'' +
-                ", rfc: '" + rfc + '\'' +
-                ", activo " + activo;
-    }
-    
-     @Override
-    public boolean equals(Object elemento) {
-        if(elemento == null){
-            return  false;
-        }else{
-            if (!(elemento instanceof Profesor)){
-                return  false;
-            }else{
-                Profesor profesor= (Profesor) elemento;
-                if (idProfesor == profesor.idProfesor && folioProfesor == profesor.folioProfesor && profesor.equals(profesor.tituloProfesor)&& 
-                        profesor.equals(profesor.apPaterno) && profesor.equals(profesor.apMaterno) && profesor.equals(profesor.nombreProf) &&
-                        profesor.equals(profesor.rfc) && profesor.equals(profesor.activo)){
-                    return  true;
-                }else{
-                    return false;
-                }
-            }
-        }
     }
     
     

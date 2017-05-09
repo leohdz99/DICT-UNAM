@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 javigen
+ * Copyright (C) 2017 Javier Génico
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,67 +16,54 @@
  */
 package geologia.modelo;
 
-import java.sql.*;
 import java.util.ResourceBundle;
 import javax.swing.JOptionPane;
 import org.neo4j.driver.v1.*;
-import static org.neo4j.driver.v1.Values.parameters;
+import org.neo4j.driver.v1.exceptions.AuthenticationException;
+import org.neo4j.driver.v1.exceptions.Neo4jException;
 
 
 public class ConexionGBD {
     
+    public static Driver driver = null; 
+    private final String DRIVER = "bolt://localhost:7687";
+    private final String USER = "neo4j";
+    private final String PASS = "123";
     
-    private ResourceBundle rb = ResourceBundle.getBundle("geologia.control.configBD"); 
-    private final String DRIVER = "org.neo4j.jdbc.Driver";
-    private String ipDir = rb.getString("dir_ip");
-    private String URL_JDBC = "jdbc:neo4j:bold://"+ ipDir +":7687";
-    
-    private static Connection conexion = null;
-    //private String usuarioBD;
-    //private String PassBD;
-    
-    //Constructor de la conexión a la BD
-    private ConexionGBD() {
+    private ConexionGBD(){
+        
         try {
-            Class.forName(DRIVER);
-            conexion = DriverManager.getConnection(URL_JDBC, rb.getString("usrGDB")
-                    , rb.getString("passGDB"));
-            conexion.setAutoCommit(false);
             
-        } catch(ClassNotFoundException cnfe){
-            JOptionPane.showMessageDialog(null, cnfe.getMessage(),
-                    "No se encontró el controlador", JOptionPane.ERROR_MESSAGE);
-            System.exit(1);
-        } catch(SQLException se){
-            JOptionPane.showMessageDialog(null, se.getMessage(), 
-                    "No se pudo conectar a la base de datos", 
-                    JOptionPane.ERROR_MESSAGE);
-            System.exit(1);
+            driver = GraphDatabase.driver(DRIVER, AuthTokens.basic(USER, PASS));
+            
+        } catch (AuthenticationException ae) {
+            ae.getMessage();
+        } catch (Neo4jException nfje) {
+            nfje.getMessage();
+        } catch (NullPointerException npe){
+            System.out.println("No se puede conectar a la base de datos, "
+                    + "Asegurese de su conexión.");
         }
-        
-        
     }
-
-    public static Connection getConexion() {
-        if (conexion == null) {
+    
+    public static Driver obtenerConexion() {
+        if (driver == null) {
             new ConexionGBD();
         }
-        return conexion;
+        return driver;
     }
     
     public static void cerrarConexion(){
         try {
-            if (conexion != null) {
-                conexion.close();
-                conexion = null;
+            if (driver != null) {
+                driver.close();
+                driver = null;
             }
-        } catch (SQLException se) {
-            JOptionPane.showMessageDialog(null, se.getMessage(), 
+        } catch (Neo4jException nfje) {
+            JOptionPane.showMessageDialog(null, nfje.getMessage(), 
                     "No se pudo cerrar la base de datos", 
                     JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
     }
-    
-    
 }

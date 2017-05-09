@@ -9,95 +9,47 @@ package geologia.modelo.dto;
  *
  * @author Javier
  */
-
-import java.sql.Time;
-
 public class Asignatura {
     
-    private int idAsignatura;
-    private int claveAsignatura;
-    private String nombreAsignatura;
-    private float horasSem;
-
-
+    private int clvAsig;
+    private String nomAsig;
+    private double hrsSem;
+    
     public Asignatura(){
-        
-    }
-    public Asignatura(int idAsignatura, int claveAsignatura, 
-                     String nombreAsignatura, float horasSem){
-        
-        this.idAsignatura = idAsignatura;
-        this.claveAsignatura = claveAsignatura;
-        this.nombreAsignatura = nombreAsignatura;
-        this.horasSem = horasSem;
-        
-        
-    }
-    
-    public int getIdAsignatura() {
-        return idAsignatura;
+        clvAsig = 0;
+        nomAsig = null;
+        hrsSem = 0.0;
     }
 
-    public void setIdAsignatura(int idAsignatura) {
-        this.idAsignatura = idAsignatura;
-    }
-    
-  
-    
-    public int getClaveAsignatura() {
-        return claveAsignatura;
+    public Asignatura(int clvAsig, String nomAsig, double hrsSem) {
+        this.clvAsig = clvAsig;
+        this.nomAsig = nomAsig;
+        this.hrsSem = hrsSem;
     }
 
-    public void setClaveAsignatura(int claveAsignatura) {
-        this.claveAsignatura = claveAsignatura;
-    }
-    
-    public String getNombreAsignatura() {
-        return nombreAsignatura;
+    public int getClvAsig() {
+        return clvAsig;
     }
 
-    public void setNombreAsignatura(String nombreAsignatura) {
-        this.nombreAsignatura = nombreAsignatura;
-    }
-    
-    public float getHorasSem(){
-        
-        return horasSem;
-    }
-    
-    public void setHorasSem(float horasSem){
-        
-        this.horasSem = horasSem;
-    }
-    
-    @Override
-    public String toString() {
-        return  "idAsignatura: " + idAsignatura +            
-                ", claveAsignatura: '" + claveAsignatura + '\'' +
-                ", nombreAsignatura: " + nombreAsignatura + '\'' +
-                ", horasSem: " + horasSem;
-    }
-    
-    @Override
-    public boolean equals(Object elemento) {
-        if(elemento == null){
-            return  false;
-        }else{
-            if (!(elemento instanceof Asignatura)){
-                return  false;
-            }else{
-                Asignatura asignatura = (Asignatura) elemento;
-                if (idAsignatura == asignatura.idAsignatura &&
-                        claveAsignatura == asignatura.claveAsignatura && 
-                        nombreAsignatura.equals(asignatura.nombreAsignatura) &&
-                                horasSem == asignatura.horasSem){
-                    return  true;
-                }else{
-                    return false;
-                }
-            }
-        }
+    public void setClvAsig(int clvAsig) {
+        this.clvAsig = clvAsig;
     }
 
+    public String getNomAsig() {
+        return nomAsig;
+    }
 
+    public void setNomAsig(String nomAsig) {
+        this.nomAsig = nomAsig;
+    }
+
+    public double getHrsSem() {
+        return hrsSem;
+    }
+
+    public void setHrsSem(double hrsSem) {
+        this.hrsSem = hrsSem;
+    }
+    
+    
 }
