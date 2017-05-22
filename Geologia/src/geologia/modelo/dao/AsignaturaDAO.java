@@ -8,96 +8,79 @@
  */
 package geologia.modelo.dao;
 
-import java.sql.*;
+
 
 import javax.swing.JOptionPane;
 
-import geologia.modelo.ConexionBD;	//conexión de a la BD
-import geologia.modelo.dto.Asignatura;
+	//conexión de a la BD
+import geologia.modelo.ConexionGBD;
 import java.util.ArrayList;
+import org.neo4j.driver.v1.Record;
+import org.neo4j.driver.v1.Session;
+import org.neo4j.driver.v1.StatementResult;
+import org.neo4j.driver.v1.exceptions.Neo4jException;
+import org.neo4j.driver.v1.exceptions.SessionExpiredException;
 
 public class AsignaturaDAO{
 
-	private static PreparedStatement sentenciaPreparada;
-	private static Statement sentencia;
-	private static ResultSet tuplas;
-	private static Connection conexion;
+	    
+    // Varaibles
+    private static org.neo4j.driver.v1.Driver conexion = null;
+    private static Session sesion = null;
+    private static StatementResult resultado = null;
+    private static Record registro = null;
+
+    
+    //MÉTODO PARA LISTAR EN EL SISTEMA
+    // <editor-fold defaultstate="collapsed" desc="Obtener Asignaturas">
+    public static ArrayList<String> obtenerAsignatura(){
         
-       
         
-
-	/**
-	 * obtiene todos las Asignaturas que coincidan con el nombre de la asignatura pasado como parámetro
-	 * @param nombreAsignatura- a buscar en la BD
-	 * @return una matriz con los registros de la asigantura en los renglones y separando los atributos en las columnas
-	 * 			se necesita para indicar los datos del modelo de datos de la JTable
-	 */
-
-	public static int getIdAsignatura(String nombreAsignatura){
-
-		int idAsignatura = 0;	//define matriz
-		String query;				//cadena que espeficica la query
-				
-		try {
-		        	
-                    conexion = ConexionBD.getConexion();	//obtiene conexión (nunca la crea aquí)
-                    sentencia = conexion.createStatement();	//crea objeto instrucción
-
-	        
-
-                    query = "SELECT idAsignatura FROM Asignatura " +		
-        			"WHERE nombreAsiglike '%" + nombreAsignatura + "%' " +
-		        	"ORDER BY idAsignatura";				//query para obtener Profesores que corresponden con el apellido
-		    tuplas = sentencia.executeQuery(query);		//ejecuta query					
-		    
-		    if (tuplas.next()) {			//recorre todos los renglones
-		       	idAsignatura = tuplas.getInt("idAsignatura");			//pone el nombre en la matriz 
-		    }
-
-		    //captura excepciones
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Error al leer las asignaturas " + e.getMessage(), 
-						"Error", JOptionPane.ERROR_MESSAGE);
-		} finally {	
-			ConexionBD.cerrarConexion();
-		}
-		
-		return idAsignatura;	//regresa la matriz		
-	}
+        conexion = ConexionGBD.obtenerConexion();
         
-        public static ArrayList<String> obtenerNombreAsignatura(String nombre){
+        ArrayList<String> asignaturas = null;
+        try {
+            sesion = conexion.session();
             
-                ArrayList<String> asignaturas = new ArrayList<String>();    //define el arreglo
-		String query;				//cadena que espeficica la query
-				
-		try {
-		        	
-                    conexion = ConexionBD.getConexion();	//obtiene conexión (nunca la crea aquí)
-
-                    sentencia = conexion.createStatement();	//crea objeto instrucción
-
-                    query = "SELECT nombreAsig FROM asignatura\n"+
-                            "WHERE nombreAsig like '%"+nombre+"%'\n"+
-                            "ORDER BY nombreAsig;";		//query para contar profesores
-                    tuplas = sentencia.executeQuery(query);							//ejecuta query
-		    
-                    int pos = 0;
+            try {
+                
+                // Aqui no ocupamos transacciones, puesto que estamos listando
+                // Traemos todos los registros de la Consulta;
+                resultado = sesion.run("MATCH(a:Asignatura)\n"
+                        + "RETURN a.nomAsig as asign");
+                asignaturas = new ArrayList<>();
+                
+                // Mientras existan registros
+                while (resultado.hasNext()) {
                     
-                    while (tuplas.next()) {			//recorre todos los renglones
-
-                        asignaturas.add(tuplas.getString(1));
-                        
-		    }
-		    //captura excepciones
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Error al leer los Datos " + e.getMessage(), 
-						"Error", JOptionPane.ERROR_MESSAGE);
-		} finally {
-				
-			ConexionBD.cerrarConexion();
-		}
-		
-		return asignaturas;	//regresa el arreglo
+                    // Ttraemos el registro
+                    registro = resultado.next();
+                    
+                    //Imprimimos en consola
+                    asignaturas.add(registro.get("asign").asString());
+                }
+            } catch (Neo4jException nfje) {
+                System.out.println(nfje.getMessage());
+            }
+        } catch (SessionExpiredException see) {
+            JOptionPane.showMessageDialog(null, "Error al leer los salones: " + 
+                                            see.getMessage(), 
+                                            "Error", JOptionPane.ERROR_MESSAGE);
+        }catch (Neo4jException nfje){
+            JOptionPane.showMessageDialog(null, "Error al leer los salones: " + 
+                                            nfje.getMessage(), 
+                                            "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
             
+            //Cierra la Sesion
+            sesion.close();
+            
+            //Cierra la conexión
+            ConexionGBD.cerrarConexion();
         }
+        
+        return asignaturas;
+        
+    }// </editor-fold>
+            
 }

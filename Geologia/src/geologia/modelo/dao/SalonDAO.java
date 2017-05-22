@@ -49,13 +49,12 @@ public class SalonDAO{
 
     
     //MÉTODO PARA LISTAR EN EL SISTEMA
-    
-// <editor-fold defaultstate="collapsed" desc="Obtener Profesores">
+    // <editor-fold defaultstate="collapsed" desc="Obtener Salones">
     public static ArrayList<String> obtenerSalones(){
         
         
         conexion = ConexionGBD.obtenerConexion();
-        int pos = 0;
+       
         ArrayList<String> salones = null;
         try {
             sesion = conexion.session();
@@ -76,7 +75,6 @@ public class SalonDAO{
                     
                     //Imprimimos en consola
                     salones.add(registro.get("salon").asString());
-                    pos ++;
                 }
             } catch (Neo4jException nfje) {
                 System.out.println(nfje.getMessage());

@@ -25,7 +25,7 @@ import org.neo4j.driver.v1.exceptions.Neo4jException;
 
 public class ConexionGBD {
     
-    public static Driver driver = null; 
+    private static Driver driver = null; 
     private final String DRIVER = "bolt://localhost:7687";
     private final String USER = "neo4j";
     private final String PASS = "123";
@@ -48,7 +48,7 @@ public class ConexionGBD {
     
     public static Driver obtenerConexion() {
         if (driver == null) {
-            new ConexionGBD();
+           new ConexionGBD();
         }
         return driver;
     }

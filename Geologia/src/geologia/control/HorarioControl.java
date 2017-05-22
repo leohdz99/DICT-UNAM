@@ -20,13 +20,14 @@ package geologia.control;
  *
  * @author JoshPosh
  */
-import geologia.modelo.dao.AsignaturaDAO;
-import geologia.modelo.dao.HorarioDAO;
-import geologia.modelo.dao.ProfesorDAO;
-import geologia.modelo.dao.SalonDAO;
 
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
+import geologia.modelo.dao.HorarioDAO;
+
+import geologia.modelo.dto.Asignatura;
+import geologia.modelo.dto.Horario;
+import geologia.modelo.dto.Profesor;
+import geologia.modelo.dto.Salon;
+
 import geologia.vista.PruebaHIGU;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,8 +43,7 @@ import javax.swing.event.DocumentListener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.RowFilter;
+
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -51,6 +51,10 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
         DocumentListener,MouseListener, ListSelectionListener, ItemListener{
 
     private PruebaHIGU ventana;
+    private Profesor prf ;
+    private Asignatura asgn;
+    private Salon sln;
+    private Horario hr, hrM;
 
     public HorarioControl(PruebaHIGU ventana) {
         this.ventana = ventana;
@@ -149,6 +153,18 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
         if (e.getSource() == ventana.getJcSalon()){
             buscarSalon();
         }
+        */
+        
+        
+        /*
+        
+        
+        modificar
+        
+        1 cargar los datos del nodo a modificar en un objeto horario
+        2 eliminar el nodo horario y sus relaciones
+        3 hacemos las modificaciones y las asignamos al objeto horario
+        4 hacemos la insercion del nodo modificado: guardar()
         */
     }
     
@@ -257,6 +273,32 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
         }
         */
         
+        prf = new Profesor(
+                "", 
+                ventana.getCbProfesor().getSelectedItem().toString(), 
+                "", 
+                ""
+        );
+        
+        asgn = new Asignatura(
+                0, 
+                ventana.getCbAsignatura().getSelectedItem().toString(), 
+                0
+        );
+        
+        sln = new Salon(ventana.getCbSalon().getSelectedItem().toString(), 0);
+        
+        
+        
+        hr = new Horario(ventana.getTxGrupo().getText().toString(),
+                13.0,
+                15.0,
+                24
+        );
+        
+        
+        HorarioDAO.insertar(hr, sln, asgn, prf);
+        ventana.limpiar();
         
     }
     

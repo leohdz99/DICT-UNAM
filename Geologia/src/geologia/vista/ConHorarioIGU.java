@@ -196,7 +196,7 @@ public class ConHorarioIGU extends JInternalFrame{
     public void llenarCB2() {
         jcbMostrarAsig.removeAllItems(); //Vaciamos el JComboBox
         ArrayList<String> resultat;
-        resultat = AsignaturaDAO.obtenerNombreAsignatura("");//La consulta tiene que retornar un ArrayList
+        resultat = AsignaturaDAO.obtenerAsignatura();//La consulta tiene que retornar un ArrayList
         jcbMostrarAsig.addItem("");
         for(int i=0; i < resultat.size();i++){
             jcbMostrarAsig.addItem(resultat.get(i));

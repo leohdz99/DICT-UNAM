@@ -16,17 +16,14 @@ import geologia.modelo.dao.AsignaturaDAO;
 import geologia.modelo.dao.HorarioDAO;
 import geologia.modelo.dao.ProfesorDAO;
 import geologia.modelo.dao.SalonDAO;
-import java.awt.*;
-import java.sql.Time;
 import java.util.ArrayList;
 
 import javax.swing.*;
-import javax.swing.border.*;
 import javax.swing.table.*;
 
 public class PruebaHIGU extends JInternalFrame {
     
-   //define un objeto de esta clase para que sólo exista un objeto de ella
+    //define un objeto de esta clase para que sólo exista un objeto de ella
     //(patrón singleton) para usar este objeto se crea el método getVentana()
     private static PruebaHIGU ventana;	
     
@@ -82,6 +79,7 @@ public class PruebaHIGU extends JInternalFrame {
     public PruebaHIGU(){
         super("***Horarios***", false, true, false, true);
         inicializarComp();
+        inicializarCtrl();
         propiedadesV();
         agregarEtiquetas();
         establecerCombo();
@@ -89,14 +87,13 @@ public class PruebaHIGU extends JInternalFrame {
         establecerBotones();
         agregarTabla();
         establecerLayout();
-        
+        asignarCtrlGraf();
     }
     
     //Metodo que asigna propiedades a la ventana
     private void propiedadesV(){
         setSize(1000, 700);
     }
-    
     
     // Metodo para creación del objeto (Patrón Singleton).
     public static PruebaHIGU getVentana(){
@@ -106,6 +103,16 @@ public class PruebaHIGU extends JInternalFrame {
 		}
 		
 		return ventana;					
+    }
+    
+    public void inicializarCtrl(){
+        control = new HorarioControl(this);
+        
+    }
+    
+    public void asignarCtrlGraf(){
+        btnGuardar.addActionListener(control);
+        btnCancelar.addActionListener(control);
     }
     
     // Metodo para inicializar los componentes de la ventana
@@ -152,7 +159,6 @@ public class PruebaHIGU extends JInternalFrame {
         lbGrupo.setText("Grupo:");
         lbProfesor.setText("Profesor:");
         lbSalon.setText("Salon:");
-        txGrupo.setText("prueba");
         lbHora.setText("Horario");
         lbLista.setText("Lista de Horarios");
         jLabel1.setText(":");
@@ -165,19 +171,10 @@ public class PruebaHIGU extends JInternalFrame {
     // Metodo para agregar la tabla a la ventana
     private void agregarTabla(){
         
-        tbLista.setModel(new DefaultTableModel(
-               new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
-            },
+        Object datos[][] = ProfesorDAO.filtrarProfesor("");	
+        tbLista.setModel(new DefaultTableModel(            
+                HorarioDAO.filtrarHorario("")
+            ,
             new String [] {
                 "Clave", "Asignatura", "Grupo", "Salon", "Profesor", "Folio", "Horario", "Días"
             }
@@ -256,7 +253,7 @@ public class PruebaHIGU extends JInternalFrame {
                                     .addGroup(HorarioIGULayout.createSequentialGroup()
                                         .addGap(72, 72, 72)
                                         .addGroup(HorarioIGULayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(cbProfesor, 0, 192, Short.MAX_VALUE)))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HorarioIGULayout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -299,19 +296,19 @@ public class PruebaHIGU extends JInternalFrame {
                                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, HorarioIGULayout.createSequentialGroup()
                                                 .addComponent(lbHoraS, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)    
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(cbHrsS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(cbHrsS, 50,50,50)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                             .addGroup(HorarioIGULayout.createSequentialGroup()
                                                 .addComponent(lbHoraE, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(cbHrsE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(cbHrsE, 50,50,50)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jLabel2)))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(HorarioIGULayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(cbMinE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(cbMinS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                                            .addComponent(cbMinE, 50,50,50)
+                                            .addComponent(cbMinS, 50,50,50)))))))
                     .addGroup(HorarioIGULayout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addComponent(scTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -385,14 +382,35 @@ public class PruebaHIGU extends JInternalFrame {
     //Establece los ComboBoxes
     private void establecerCombo(){
         cbAsignatura.setModel(new DefaultComboBoxModel<>(new String[] {}));
+        llenarCbAsig();
         cbSalon.setModel(new DefaultComboBoxModel<>(new String[] {}));
+        llenarCbSalon();
         cbProfesor.setModel(new DefaultComboBoxModel<>(new String[] {}));
+        llenarCbProf();
         
-        cbHrsE.setModel(new DefaultComboBoxModel<>(new String[] {}));
-        cbMinE.setModel(new DefaultComboBoxModel<>(new String[] {}));
-        
-        cbHrsS.setModel(new DefaultComboBoxModel<>(new String[] {}));
-        cbMinS.setModel(new DefaultComboBoxModel<>(new String[] {}));
+        cbHrsE.setModel(new DefaultComboBoxModel<>(new String[] {"",
+            "07","08","09","10",
+            "11","12","13","14",
+            "15","16","17","18",
+            "19","20","21","22"
+        }));
+        cbMinE.setModel(new DefaultComboBoxModel<>(new String[] {"",
+            "00","05","10",
+            "15","20","25",
+            "30","35","40",
+            "45","50","55"
+        }));
+        cbHrsS.setModel(new DefaultComboBoxModel<>(new String[] {"",
+            "07","08","09","10",
+            "11","12","13","14",
+            "15","16","17","18",
+            "19","20","21","22"}));
+        cbMinS.setModel(new DefaultComboBoxModel<>(new String[] {"",
+            "00","05","10",
+            "15","20","25",
+            "30","35","40",
+            "45","50","55"
+        })); 
     }
     
     //Establece como se van a ver los CheckBoxes los 
@@ -405,12 +423,171 @@ public class PruebaHIGU extends JInternalFrame {
         ckSabado.setText("Sábado");
     }
     
+    public void llenarCbAsig(){
+        
+        cbAsignatura.removeAllItems(); //Vaciamos el JComboBox
+        ArrayList<String> resultat;
+        resultat = AsignaturaDAO.obtenerAsignatura();//La consulta tiene que retornar un ArrayList
+        cbAsignatura.addItem("");
+        for(int i=0; i < resultat.size();i++){
+            cbAsignatura.addItem(resultat.get(i));
+        }
+    }
+    
+    public void llenarCbProf(){
+        
+        cbProfesor.removeAllItems(); //Vaciamos el JComboBox
+        ArrayList<String> resultat;
+        resultat = ProfesorDAO.obtenerNomProf();//La consulta tiene que retornar un ArrayList
+        cbProfesor.addItem("");
+        for(int i=0; i < resultat.size();i++){
+            cbProfesor.addItem(resultat.get(i));
+        }
+    }
+    
+    public void llenarCbSalon(){
+        
+        cbSalon.removeAllItems(); //Vaciamos el JComboBox
+        ArrayList<String> resultat;
+        resultat = SalonDAO.obtenerSalones();//La consulta tiene que retornar un ArrayList
+        cbSalon.addItem("");
+        for(int i=0; i < resultat.size();i++){
+            cbSalon.addItem(resultat.get(i));
+        }
+    }
+    
+    
+    
     public void limpiar(){
         cbAsignatura.setSelectedIndex(0);
         cbSalon.setSelectedIndex(0);
         cbProfesor.setSelectedIndex(0);
+        cbHrsE.setSelectedIndex(0);
+        cbHrsS.setSelectedIndex(0);
+        cbMinE.setSelectedIndex(0);
+        cbMinS.setSelectedIndex(0);
+        ckLunes.setSelected(false);
+        ckMartes.setSelected(false);
+        ckMiercoles.setSelected(false);
+        ckJueves.setSelected(false);
+        ckViernes.setSelected(false);
+        ckSabado.setSelected(false);
         txGrupo.setText("");
     }
+
+    public JComboBox getCbAsignatura() {
+        return cbAsignatura;
+    }
+
+    public void setCbAsignatura(JComboBox cbAsignatura) {
+        this.cbAsignatura = cbAsignatura;
+    }
+
+    public JComboBox getCbHrsE() {
+        return cbHrsE;
+    }
+
+    public void setCbHrsE(JComboBox cbHrsE) {
+        this.cbHrsE = cbHrsE;
+    }
+
+    public JComboBox getCbHrsS() {
+        return cbHrsS;
+    }
+
+    public void setCbHrsS(JComboBox cbHrsS) {
+        this.cbHrsS = cbHrsS;
+    }
+
+    public JComboBox getCbMinE() {
+        return cbMinE;
+    }
+
+    public void setCbMinE(JComboBox cbMinE) {
+        this.cbMinE = cbMinE;
+    }
+
+    public JComboBox getCbMinS() {
+        return cbMinS;
+    }
+
+    public void setCbMinS(JComboBox cbMinS) {
+        this.cbMinS = cbMinS;
+    }
+
+    public JComboBox getCbProfesor() {
+        return cbProfesor;
+    }
+
+    public void setCbProfesor(JComboBox cbProfesor) {
+        this.cbProfesor = cbProfesor;
+    }
+
+    public JComboBox getCbSalon() {
+        return cbSalon;
+    }
+
+    public void setCbSalon(JComboBox cbSalon) {
+        this.cbSalon = cbSalon;
+    }
+
+    public JCheckBox getCkJueves() {
+        return ckJueves;
+    }
+
+    public void setCkJueves(JCheckBox ckJueves) {
+        this.ckJueves = ckJueves;
+    }
+
+    public JCheckBox getCkLunes() {
+        return ckLunes;
+    }
+
+    public void setCkLunes(JCheckBox ckLunes) {
+        this.ckLunes = ckLunes;
+    }
+
+    public JCheckBox getCkMartes() {
+        return ckMartes;
+    }
+
+    public void setCkMartes(JCheckBox ckMartes) {
+        this.ckMartes = ckMartes;
+    }
+
+    public JCheckBox getCkMiercoles() {
+        return ckMiercoles;
+    }
+
+    public void setCkMiercoles(JCheckBox ckMiercoles) {
+        this.ckMiercoles = ckMiercoles;
+    }
+
+    public JCheckBox getCkSabado() {
+        return ckSabado;
+    }
+
+    public void setCkSabado(JCheckBox ckSabado) {
+        this.ckSabado = ckSabado;
+    }
+
+    public JCheckBox getCkViernes() {
+        return ckViernes;
+    }
+
+    public void setCkViernes(JCheckBox ckViernes) {
+        this.ckViernes = ckViernes;
+    }
+
+    public JTextField getTxGrupo() {
+        return txGrupo;
+    }
+
+    public void setTxGrupo(JTextField txGrupo) {
+        this.txGrupo = txGrupo;
+    }
+    
+    
 }
 
 //CODIGO ANTERIOR

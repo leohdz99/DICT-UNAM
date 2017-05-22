@@ -180,8 +180,10 @@ public class ProfesorDAO{
             try {
                 
                 resultado = sesion.run("MATCH (p:Profesor)\n"
-                        + "WHERE p.profe =~ '(?i)"+nombreProf+".*'\n"
-                        + "RETURN count(p.profe) as numP");
+                        + "WHERE p.profe CONTAINS {nomProf}\n"
+                        + "RETURN count(p.profe) as numP", 
+                        parameters("nomProf", nombreProf)
+                );
                 
                 registro = resultado.next();
                 cont = registro.get("numP").asInt();
@@ -190,11 +192,13 @@ public class ProfesorDAO{
                 // Aqui no ocupamos transacciones, puesto que estamos listando
                 // Traemos todos los registros de la Consulta;
                 resultado = sesion.run("MATCH (p:Profesor)\n"
-                        + "WHERE p.profe =~ '(?i)"+nombreProf+".*'\n"
+                        + "WHERE p.profe CONTAINS {nomProf}\n"
                         + "RETURN p.rfc as rfcP,"
                         + "p.profe as nombreP,"
                         + "p.folio as folioP,"
-                        + "p.activo as activoP");
+                        + "p.activo as activoP",
+                        parameters("nomProf", nombreProf)
+                );
                         
                 Profesor pf = new Profesor();
                 
