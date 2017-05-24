@@ -62,77 +62,70 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
     
     ValidadorH validador = new ValidadorH() {
         
-        private Pattern patron;
-        private Matcher igual;
-        private final String FORMATO_HORA = "[0-2][0-9][:][0-5][0-9]";
+      
         
         @Override
-        public boolean validarHora(String hora) {
+        public boolean validarHorario() {
             
-            boolean val = true;
+            boolean ok = true;
             
-            patron = Pattern.compile(FORMATO_HORA);
-            igual = patron.matcher(hora);
-                        
-            if(!igual.matches()){
-                JOptionPane.showMessageDialog(null, 
-                        "El formato de hora es incorrecto", "Advertencia", 
-                        JOptionPane.ERROR_MESSAGE);
-                val = false;
+            //********************Horas***************************
+            
+            //Validando que los campos no esten vacios 
+            if(ventana.getCbHrsE().getSelectedIndex() == 0 
+                    || ventana.getCbHrsS().getSelectedIndex() == 0 
+                    || ventana.getCbMinE().getSelectedIndex() == 0 
+                    || ventana.getCbMinS().getSelectedIndex() == 0){
+                ok = false;
             }
             
-            return val;
-        }
-
-        @Override
-        public boolean validarDias() {
-            boolean val = false;
             
+            //*******************Dias*****************************
             
-            return val;
-        }
-
-        @Override
-        public boolean validarGrupo(String grupo) {
-            boolean val = true;
-            if(grupo.isEmpty()){
+            //Validamos que esté seleccionado un dia minimo 
+            if (!ventana.getCkLunes().isSelected() 
+                    && ventana.getCkMartes().isSelected() 
+                    && ventana.getCkMiercoles().isSelected() 
+                    && ventana.getCkJueves().isSelected() 
+                    && ventana.getCkViernes().isSelected() 
+                    && ventana.getCkSabado().isSelected()){
+             
+             JOptionPane.showMessageDialog(null, 
+                    "Seleccione los dias que tendra el horario", "Advertencia", 
+                    JOptionPane.ERROR_MESSAGE);
+             ok = false;
+            }
+            
+            //**********************Grupo**************************
+            if(ventana.getTxGrupo().getText().isEmpty()){
                 JOptionPane.showMessageDialog(null, 
                     "Ingrese el Grupo", "Advertencia", 
                     JOptionPane.ERROR_MESSAGE);
-                    val =false;
-            }else{ 
-                if (!isNumeric(grupo)) {
-                    JOptionPane.showMessageDialog(null, 
-                    "Solo numeros en el campo del grupo", "Advertencia", 
-                    JOptionPane.ERROR_MESSAGE);
-                    val =false;
-                } 
+                    ok =false;
             }
-            return val;
+                
+            
+            return ok;
+            
+        }
+        
+        @Override
+        public boolean validarProfesor() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
-        public boolean vaildarComboBox(JComboBox cb) {
-            boolean val = true;
-                       
-            if(cb.getSelectedIndex() == 0)
-                       val = false;
-                       cb.requestFocus();
-            return val;
+        public boolean validarAsignatura() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
-        
-        private boolean isNumeric(String cadena){
-            try {
-                    Integer.parseInt(cadena);
-                    return true;
-            } catch (NumberFormatException nfe){
-                    return false;
-            }
+
+        @Override
+        public boolean vaildarSalon() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
-            
     };
     
-        @Override
+    @Override
     public void itemStateChanged(ItemEvent e) {
         switch(e.getSource().toString()){
             
@@ -149,6 +142,7 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
             case "Cancelar": ventana.limpiar();
                 break;
         }
+    }    
         /*
         if (e.getSource() == ventana.getJcSalon()){
             buscarSalon();
@@ -166,138 +160,38 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
         3 hacemos las modificaciones y las asignamos al objeto horario
         4 hacemos la insercion del nodo modificado: guardar()
         */
-    }
+    public double horaEntrada(){
+       
+       
+        double x, y;
+
+        x = Double.parseDouble(ventana.getCbHrsE().toString());
+        y = Double.parseDouble(ventana.getCbMinE().toString());
+        double z = y / 60.0;
+        
+        return x + z;
+       
+       
+   }
+   
+     public double horaSalida(){
+       
+       
+        double hrS, minS;
+
+        hrS = Double.parseDouble(ventana.getCbHrsS().toString());
+        minS = Double.parseDouble(ventana.getCbMinS().toString());
+        double horarioS = minS / 60.0;
+        
+        return hrS + minS;
+       
+       
+   }
     
     
     public void guardar(){
         
-        /*
-        - Validar e insertar:
-            Campos
-            Validar que no haya horarios repetidos
-            Que se cumplan las horas establecidas por la asignatura
-            Si (No se cumple){
-                VentanaEmergente preguntando que hacer
-                    -- Cancelar
-                    -- AgregarComplmentario
-                switch (opciones){
-                    case AgregarComplementario: Inserta el real
-                                                Recupear el ultimo id
-                                                Validar el horario complementario
-                                                
-        
-                    case Cancelar:  Regresa a la interfaz
-                                    Preguntar si queire modificar el horario definido
-                                    Si (no quiere){
-                                        limpia la pantata
-                                    } en caso contrario {
-                                        regresa si borrar nada 
-                                    }
-                                                 
-                }    
-            ] en caso contrario {
-                Inserta el real.
-            }
-        
-        */
-        
-        
-        /*
-        if (!validador.vaildarComboBox(ventana.getJcAsignatura())){
-            JOptionPane.showMessageDialog(null, "Falta la Asignatura", 
-                    "advertencia", JOptionPane.ERROR_MESSAGE);
-            ventana.getJcAsignatura().requestFocus();
-        }else if(!validador.vaildarComboBox(ventana.getJcNombreProf())){
-            JOptionPane.showMessageDialog(null, "Falta profesor", 
-                    "advertencia", JOptionPane.ERROR_MESSAGE);
-            ventana.getJcNombreProf().requestFocus();
-        }else if(!validador.vaildarComboBox(ventana.getJcSalon())){
-            JOptionPane.showMessageDialog(null, "Falta salon", 
-                    "advertencia", JOptionPane.ERROR_MESSAGE);
-            ventana.getJcSalon().requestFocus();
-        } else if (!validador.validarGrupo(ventana.getTxtGrupo().getText())){
-             JOptionPane.showMessageDialog(null, "Error en alguno de los campos", 
-                    "advertencia", JOptionPane.ERROR_MESSAGE);
-             ventana.getTxtGrupo().requestFocus();
-        } else if (!validador.validarHora(ventana.getTxtHoraE().getText())){
-            JOptionPane.showMessageDialog(null, "Error en alguno de los campos", 
-                    "advertencia", JOptionPane.ERROR_MESSAGE);
-            ventana.getTxtHoraE().requestFocus();
-        } else if(!validador.validarHora(ventana.getTxtHoraS().getText())){
-            JOptionPane.showMessageDialog(null, "Error en alguno de los campos", 
-                    "advertencia", JOptionPane.ERROR_MESSAGE);
-            ventana.getTxtHoraS().requestFocus();
-        } else  {
-            JOptionPane.showMessageDialog(null, "Campos correctamente validados", 
-                    "Advertencia", JOptionPane.INFORMATION_MESSAGE);
-            
-            Horario horario =  new Horario(ventana.getSemestre(), 
-                
-                ventana.getTxtGrupo().getText(),
-                ventana.getTxtHoraE().getText(),
-                ventana.getTxtHoraS().getText(), 
-                AsignaturaDAO.getIdAsignatura(ventana.getJcAsignatura()
-                        .getSelectedItem().toString()), 
-                SalonDAO.getIdSalon(ventana.getJcSalon()
-                        .getSelectedItem().toString()), 
-                ProfesorDAO.getIdPorfesor(ventana.getJcNombreProf().
-                        getSelectedItem().toString()));
-            
-            System.out.println(horario.toString());
-            //System.out.println(HorarioDAO.validarHorario(horario));
-            System.out.println(HorarioDAO.verificarGrupos(horario));
-            
-            int traslapes =  0;//HorarioDAO.validarHorario(horario);
-            int grupoRepetido = HorarioDAO.verificarGrupos(horario);
-            
-            
-           
-            if(traslapes == 0){
-                if(grupoRepetido == 0){
-                    HorarioDAO.insertar(horario);
-                    ventana.limpiar();
-                    ventana.setTabla();
-                    
-                }else{
-                    JOptionPane.showMessageDialog(null, 
-                    "El Grupo que tratas de ingresar ya existe", 
-                    "Advertencia", JOptionPane.INFORMATION_MESSAGE);
-                }
-                
-            }else{
-                JOptionPane.showMessageDialog(null, 
-                    "El horario que tratas de ingresar se Traslapa con "+traslapes+" horarios", 
-                    "Advertencia", JOptionPane.INFORMATION_MESSAGE);
-            }
-            //ventana.limpiar();
-        }
-        */
-        
-        prf = new Profesor(
-                "", 
-                ventana.getCbProfesor().getSelectedItem().toString(), 
-                "", 
-                ""
-        );
-        
-        asgn = new Asignatura(
-                0, 
-                ventana.getCbAsignatura().getSelectedItem().toString(), 
-                0
-        );
-        
-        sln = new Salon(ventana.getCbSalon().getSelectedItem().toString(), 0);
-        
-        
-        
-        hr = new Horario(ventana.getTxGrupo().getText().toString(),
-                13.0,
-                15.0,
-                24
-        );
-        
-        
-        HorarioDAO.insertar(hr, sln, asgn, prf);
+    HorarioDAO.insertar(hr, sln, asgn, prf);
         ventana.limpiar();
         
     }

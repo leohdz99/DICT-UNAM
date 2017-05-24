@@ -23,8 +23,8 @@ import javax.swing.JComboBox;
  * @author JoshPosh
  */
 public interface ValidadorH {
-    public abstract boolean validarHora(String hora);
-    public abstract boolean validarDias();
-    public abstract boolean validarGrupo(String grupo);
-    public abstract boolean vaildarComboBox(JComboBox cb);
+    public abstract boolean validarHorario();
+    public abstract boolean validarProfesor();
+    public abstract boolean validarAsignatura();
+    public abstract boolean vaildarSalon();
 }

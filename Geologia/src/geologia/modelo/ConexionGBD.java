@@ -28,7 +28,7 @@ public class ConexionGBD {
     private static Driver driver = null; 
     private final String DRIVER = "bolt://localhost:7687";
     private final String USER = "neo4j";
-    private final String PASS = "123";
+    private final String PASS = "root";
     
     private ConexionGBD(){
         
