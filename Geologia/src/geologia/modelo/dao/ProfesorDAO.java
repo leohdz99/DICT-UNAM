@@ -247,7 +247,8 @@ public class ProfesorDAO{
     
     //MÉTODO PARA verificar Profesores
     // <editor-fold defaultstate="collapsed" desc="Verificar Profesores">
-    public static boolean verificarProfesor(String nomProf){
+    public static boolean verificarProfesor(String nomProf, String grupoVa, 
+                            double hrEV, double hrSV, String diaV){
         boolean ok = true;
         int cont = 0;
         conexion = ConexionGBD.obtenerConexion();
@@ -258,10 +259,15 @@ public class ProfesorDAO{
             try {
                 
                 //veriricacion del nodo a insertar
-                resultado = sesion.run("MATCH (p:Profesor) "
+                resultado = sesion.run("MATCH (p:Profesor)--(h.Horario) "
                             + "WHERE p.profe CONTAINS {nombreProfVa}"
+                            + "AND h.grupo = {grupoVa}\n"
+                            + "AND h.hrEnt = {hrEVa}\n"
+                            + "AND h.hrSal = {hrSVa}\n"
+                            + "AND h.dias CONTAINS {diasVa}"
                             +" RETURN count(p.profe) as profesores"
-                        ,parameters("nombreProfVA",nomProf)
+                        ,parameters("nombreProfVa",nomProf, "grupoVa", grupoVa,
+                                    "hrEVA",hrEV, "hrSVa", hrSV, "diasVa", diaV)
                 );
                 
                 registro = resultado.next();

@@ -103,7 +103,7 @@ public class SalonDAO{
     
     //MÉTODO PARA verificar Salones
     // <editor-fold defaultstate="collapsed" desc="Verificar Salones">
-    public static boolean verificarSalon(String salonVa){
+    public static boolean verificarSalon(String salonVa, String grupoVa, double hrEV, double hrSV, String diaV){
         boolean ok = true;
         int cont = 0;
         conexion = ConexionGBD.obtenerConexion();
@@ -114,10 +114,15 @@ public class SalonDAO{
             try {
                 
                 //veriricacion del nodo a insertar
-                resultado = sesion.run("MATCH (s:Salon) "
+                resultado = sesion.run("MATCH (s:Salon)--(h.Horario) "
                             + "WHERE s.salon CONTAINS {salonVa}"
-                            +" RETURN count(s.salon) as salon"
-                        ,parameters("salonVa",salonVa)
+                            + "AND h.grupo = {grupoVa}\n"
+                            + "AND h.hrEnt = {hrEVa}\n"
+                            + "AND h.hrSal = {hrSVa}\n"
+                            + "AND h.dias CONTAINS {diasVa}"
+                            +" RETURN count(p.profe) as profesores"
+                        ,parameters("salonVa",salonVa, "grupoVa", grupoVa,
+                                    "hrEVA",hrEV, "hrSVa", hrSV, "diasVa", diaV)
                 );
                 
                 registro = resultado.next();
