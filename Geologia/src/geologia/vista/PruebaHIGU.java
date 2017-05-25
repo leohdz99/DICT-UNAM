@@ -586,8 +586,16 @@ public class PruebaHIGU extends JInternalFrame {
     public void setTxGrupo(JTextField txGrupo) {
         this.txGrupo = txGrupo;
     }
+
+    public JTable getTbLista() {
+        return tbLista;
+    }
+
+    public void setTbLista(JTable tbLista) {
+        this.tbLista = tbLista;
+    }
     
-    
+        
 }
 
 //CODIGO ANTERIOR

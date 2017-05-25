@@ -22,6 +22,8 @@ package geologia.control;
  */
 
 import geologia.modelo.dao.HorarioDAO;
+import geologia.modelo.dao.SalonDAO;
+import geologia.modelo.dao.ProfesorDAO;
 
 import geologia.modelo.dto.Asignatura;
 import geologia.modelo.dto.Horario;
@@ -40,12 +42,14 @@ import java.awt.event.MouseListener;
 import javax.swing.JComboBox;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.RowFilter;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public class HorarioControl extends KeyAdapter implements ActionListener, 
         DocumentListener,MouseListener, ListSelectionListener, ItemListener{
@@ -68,7 +72,7 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
         public boolean validarHorario() {
             
             boolean ok = true;
-            
+            String dias[] = obtenerDias().split("");
             //********************Horas***************************
             
             //Validando que los campos no esten vacios 
@@ -83,13 +87,8 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
             //*******************Dias*****************************
             
             //Validamos que esté seleccionado un dia minimo 
-            if (!ventana.getCkLunes().isSelected() 
-                    && ventana.getCkMartes().isSelected() 
-                    && ventana.getCkMiercoles().isSelected() 
-                    && ventana.getCkJueves().isSelected() 
-                    && ventana.getCkViernes().isSelected() 
-                    && ventana.getCkSabado().isSelected()){
-             
+            if (obtenerDias().equals("")){
+                
              JOptionPane.showMessageDialog(null, 
                     "Seleccione los dias que tendra el horario", "Advertencia", 
                     JOptionPane.ERROR_MESSAGE);
@@ -103,25 +102,57 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
                     JOptionPane.ERROR_MESSAGE);
                     ok =false;
             }
+            
+            //********validar horas entrada con las horas salida*****
+            if(horaEntrada() > horaSalida()){
+                ok = false;
+            }
+            
+            for(int i=0;i<dias.length; i++) {
+                if(!HorarioDAO.verificarHorario(
+                    dias[i], 
+                    (String)ventana.getCbAsignatura().getSelectedItem(), 
+                    (String)ventana.getCbProfesor().getSelectedItem(), 
+                    (String)ventana.getCbSalon().getSelectedItem(), 
+                    (String)ventana.getTxGrupo().getText(), 
+                    horaEntrada(), 
+                    horaSalida())){
                 
+                    ok = false;
+                }
+            }
+            
             
             return ok;
             
         }
         
+       
+        
         @Override
         public boolean validarProfesor() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-
-        @Override
-        public boolean validarAsignatura() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            
+            String dias[] = obtenerDias().split("");
+            boolean ok = true;
+            for(int i=0;i<dias.length; i++) {
+             if(!ProfesorDAO.verificarProfesor((String)ventana.getCbProfesor().getSelectedItem())){
+                ok = false;
+                }
+            }
+            return ok;
         }
 
         @Override
         public boolean vaildarSalon() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            
+            String dias[] = obtenerDias().split("");
+            boolean ok = true;
+            for(int i=0;i<dias.length; i++) {
+                if(!SalonDAO.verificarSalon((String)ventana.getCbSalon().getSelectedItem())){
+                ok = false;
+                }
+            }
+            return ok;
         }
     };
     
@@ -165,8 +196,8 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
        
         double x, y;
 
-        x = Double.parseDouble(ventana.getCbHrsE().toString());
-        y = Double.parseDouble(ventana.getCbMinE().toString());
+        x = Double.parseDouble((String)ventana.getCbHrsE().getSelectedItem());
+        y = Double.parseDouble((String)ventana.getCbMinE().getSelectedItem());
         double z = y / 60.0;
         
         return x + z;
@@ -177,13 +208,14 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
      public double horaSalida(){
        
        
-        double hrS, minS;
+        double x, y;
 
-        hrS = Double.parseDouble(ventana.getCbHrsS().toString());
-        minS = Double.parseDouble(ventana.getCbMinS().toString());
-        double horarioS = minS / 60.0;
+        x = Double.parseDouble((String)ventana.getCbHrsS().getSelectedItem());
+        y = Double.parseDouble((String)ventana.getCbMinS().getSelectedItem());
+        double z = y / 60.0;
         
-        return hrS + minS;
+        return x + z;
+       
        
        
    }
@@ -191,10 +223,32 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
     
     public void guardar(){
         
-    HorarioDAO.insertar(hr, sln, asgn, prf);
-        ventana.limpiar();
+    if(validador.validarHorario()){
+        
+        hr = new Horario(                 
+                (String)ventana.getTxGrupo().getText(), 
+                horaEntrada(), 
+                horaSalida(),
+                obtenerDias()
+        );
+        sln = new Salon();
+        asgn = new Asignatura();
+        prf = new Profesor();
+        
+        sln.setSalon((String)ventana.getCbSalon().getSelectedItem());
+        asgn.setNomAsig((String)ventana.getCbAsignatura().getSelectedItem());
+        prf.setProf((String)ventana.getCbProfesor().getSelectedItem());
+        
+        if(HorarioDAO.insertar(hr, sln, asgn, prf)){
+            JOptionPane.showMessageDialog(null, 
+                    "insertado correctamente", "Advertencia", 
+                    JOptionPane.INFORMATION_MESSAGE);
+        }        
+    } 
+    ventana.limpiar();
         
     }
+    
     
 
     @Override
@@ -217,10 +271,35 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
         
     }
     
+    public String obtenerDias(){
+        
+        String aux = "";
+        if(ventana.getCkLunes().isSelected()){
+            aux += "1";
+        }
+        if(ventana.getCkMartes().isSelected()){
+            aux += "2";
+        }
+        if(ventana.getCkMiercoles().isSelected()){
+            aux += "3";
+        }
+        if(ventana.getCkJueves().isSelected()){
+            aux += "4";
+        }
+        if(ventana.getCkViernes().isSelected()){
+            aux += "5";
+        }
+        if(ventana.getCkSabado().isSelected()){
+            aux += "6";
+        }
+            
+        return aux;
+    }
+    
    public void buscarSalon(){
-        /*
-        String salon =  ventana.getJcSalon().getSelectedItem().toString();
-        JTable tabla = ventana.getTblLista();
+        String salon = (String)ventana.getCbSalon().getSelectedItem();
+        
+        JTable tabla = ventana.getTbLista();
         
                 TableRowSorter<TableModel>srtSalones = new TableRowSorter<>(tabla.getModel());	
 				//crea sorter de tabla para el modelo de datos de tblLista
@@ -237,7 +316,7 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
                 srtSalones.setRowFilter(modeloFiltro);			//especifica el filtro para el sorter
     
 
-      */  
+      
     }
 
 

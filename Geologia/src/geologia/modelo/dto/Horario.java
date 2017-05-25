@@ -14,17 +14,17 @@ public class Horario {
     private String grupo;
     private double hrEnt;
     private double hrSal;
-    private int dias;
+    private String dias;
     
     
     public Horario(){
         grupo = null;
         hrEnt = 0.0;
         hrSal = 0.0;
-        dias = 0;
+        dias = null;
     }
 
-    public Horario(String grupo, double hrEnt, double hrSal, int dias) {
+    public Horario(String grupo, double hrEnt, double hrSal, String dias) {
         this.grupo = grupo;
         this.hrEnt = hrEnt;
         this.hrSal = hrSal;
@@ -55,11 +55,11 @@ public class Horario {
         this.hrSal = hrSal;
     }
 
-    public int getDias() {
+    public String getDias() {
         return dias;
     }
 
-    public void setDias(int dias) {
+    public void setDias(String dias) {
         this.dias = dias;
     }
     

@@ -25,6 +25,6 @@ import javax.swing.JComboBox;
 public interface ValidadorH {
     public abstract boolean validarHorario();
     public abstract boolean validarProfesor();
-    public abstract boolean validarAsignatura();
     public abstract boolean vaildarSalon();
+    
 }

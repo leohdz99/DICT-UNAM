@@ -20,6 +20,7 @@ import geologia.modelo.dto.Profesor;
 import geologia.modelo.dto.Salon;
 
 import java.util.ArrayList;
+import geologia.vista.PruebaHIGU;
 
 import org.neo4j.driver.v1.Driver;
 import org.neo4j.driver.v1.Record;
@@ -38,7 +39,8 @@ public class HorarioDAO{
     private static StatementResult resultado = null;
     private static Record registro = null;
 
-     // METODO PARA INSERTAR UN NODO PROFESOR
+    
+    // METODO PARA INSERTAR UN NODO Horario
     // <editor-fold defaultstate="collapsed" desc="Insertar Horario">
     public static boolean insertar(Horario hr, Salon sln, 
             Asignatura asgn, Profesor prf){ 
@@ -110,7 +112,7 @@ public class HorarioDAO{
     }
     // </editor-fold> 
     
-    // METODO PARA MODIFICAR UN NODO PROFESOR
+    // METODO PARA MODIFICAR UN NODO Horario
     // <editor-fold defaultstate="collapsed" desc="Modificar Profesor">
     public static boolean modificar(Horario hr,Horario hrM, Salon sln, 
             Asignatura asgn, Profesor prf){
@@ -187,7 +189,7 @@ public class HorarioDAO{
     }
     // </editor-fold> 
     
-    // METODO PARA FILTRAR UN PROFESOR
+    // METODO PARA FILTRAR UN Horario
     // <editor-fold defaultstate="collapsed" desc="Filtrar Profesor">
     public static Object[][] filtrarHorario(String nombreProf){
         
@@ -275,7 +277,79 @@ public class HorarioDAO{
     }
     // </editor-fold>
     
-    // METODO PARA OBTENER EL NOMBRE DE LOS PROFESORES 
+    // METODO PARA VALIDAR TRANSLAPES DE HORARIOS
+    // <editor-fold defaultstate="collapsed" desc="HORARIOS REPETIDOS">
+    
+    public static boolean verificarHorario(String dia, String nomAsig, 
+            String nomP, String salonV, String grupo, double hEntrada, double hSalida){
+        
+        boolean ok = true;
+        int cont = 0;
+        conexion = ConexionGBD.obtenerConexion();
+        
+        try {
+            sesion = conexion.session();
+            
+            try {
+                                              
+                //veriricacion del nodo a insertar
+                resultado = sesion.run("MATCH (h:Horario)--(a:Asignatura), "
+                            + "(s:Salon)--(h),"
+                            + "(p:Profesor)--(h)"
+                            + "WHERE a.nomAsig CONTAINS {asigVal}\n"
+                            + "AND s.salon CONTAINS {salonVal}\n"
+                            + "AND p.profe CONTAINS {profVal}\n"
+                            + "AND h.grupo = {grupoVal}\n"
+                            + "AND h.hrEnt = {hrEVal}\n"
+                            + "AND h.hrSal = {hrSVal}\n"
+                            + "AND h.dias CONTAINS {diasVal}"
+                            +" RETURN count(h.grupo) as horarios"
+                        ,parameters(
+                                "asigVal",nomAsig,
+                                "salonVal", salonV,
+                                "profVal", nomP,
+                                "grupoVal", grupo,
+                                "hrEVal", hEntrada,
+                                "hrSVal", hSalida,
+                                "diasVal", dia
+                        )
+                );
+                        
+                registro = resultado.next();
+                cont = registro.get("horarios").asInt();
+                
+                
+                if(cont > 0){
+                    ok = false;
+                }
+                
+                
+               
+            } catch(Neo4jException nfje){
+                System.out.println(nfje.getMessage());
+            }catch (NullPointerException npe){
+                System.out.println(npe.getMessage());
+                npe.printStackTrace();
+            }
+        } catch (SessionExpiredException see){
+            System.out.println(see.getMessage());
+        } catch (Neo4jException nfje){
+            System.out.println(nfje.getMessage());
+        } finally{
+             
+            //Cerrar la sesion
+            sesion.close();
+            
+            //Cierre la conexion
+            ConexionGBD.cerrarConexion();
+        }
+         
+        return ok;
+        
+    }
+    // </editor-fold> 
+    
+    // METODO PARA OBTENER EL NOMBRE DE LOS Horarios
     // <editor-fold defaultstate="collapsed" desc="Obtener Nombre Profesores">
     public static ArrayList<String> obtenerNomProf(){
         ArrayList<String> profesores = null;
@@ -362,7 +436,7 @@ public class HorarioDAO{
 
 
  // METODO PARA ELIMINAR HORARIO 
-    // <editor-fold defaultstate="collapsed" desc="Obtener Nombre Profesores">
+    // <editor-fold defaultstate="collapsed" desc="ELIMINAR HORARIO">
     public static boolean eliminar(Horario hr,Horario hrM, Salon sln, 
             Asignatura asgn, Profesor prf){
         boolean esVerdadero = false;
@@ -377,20 +451,20 @@ public class HorarioDAO{
                 //Manejo de transacciones
                 transact = sesion.beginTransaction();
                 
-                //Modificación del nodo
-                transact.run("MATCH (h:Horario)--(a:Asignatura), "
-                            + "(s:Salon)--(h),"
-                            + "(p:Profesor)--(h)"
-                            + "WHERE a.nomAsig CONTAINS {a}\n"
-                            + "AND s.salon CONTAINS ''\n"
-                            + "AND p.profe CONTAINS ''\n"
-                            + "AND h.grupo = 1\n"
-                            + "AND h.hrEnt = 9.00\n"
-                            + "AND h.hrSal = 11.00\n"
-                            + "AND h.dias = 6\n"
-                            + "SET h.hrEnt = 15.00,\n"
-                            + "h.hrSal = 19.00,\n"
-                            + "h.dias = 25"
+                //Eliminar del nodo
+                transact.run("MATCH (h:Horario)-[cu:CUBRE]->(a:asignatura), "
+                            +"(s:Salon)-[si:SE_IMPARTE]->(h),"
+                            +"(p:profesor)-[im:IMPARTE]->(h)"
+                            +"WHERE a.nomAsig CONTAINS '' "
+                            +"AND s.salon CONTAINS '' "
+                            +"AND p.profe CONTAINS ''"
+                            +"AND h.grupo = ''"
+                            +"AND h.hrEnt = ''"
+                            +"AND h.hrSal = ''"
+                            +"AND h.dias = ''"
+                            +"DELETE h,a,cu,"
+                           +"s,h,si,"
+                           +"p,h,im"
                         ,parameters(
                                 "asign", asgn.getNomAsig(),
                                 "salon", sln.getSalon(),

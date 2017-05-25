@@ -36,6 +36,7 @@ import org.neo4j.driver.v1.Driver;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.Session;
 import org.neo4j.driver.v1.StatementResult;
+import static org.neo4j.driver.v1.Values.parameters;
 import org.neo4j.driver.v1.exceptions.Neo4jException;
 import org.neo4j.driver.v1.exceptions.SessionExpiredException;
 
@@ -99,4 +100,53 @@ public class SalonDAO{
         return salones;
         
     }// </editor-fold>
+    
+    //MÉTODO PARA verificar Salones
+    // <editor-fold defaultstate="collapsed" desc="Verificar Salones">
+    public static boolean verificarSalon(String salonVa){
+        boolean ok = true;
+        int cont = 0;
+        conexion = ConexionGBD.obtenerConexion();
+        
+        try {
+            sesion = conexion.session();
+            
+            try {
+                
+                //veriricacion del nodo a insertar
+                resultado = sesion.run("MATCH (s:Salon) "
+                            + "WHERE s.salon CONTAINS {salonVa}"
+                            +" RETURN count(s.salon) as salon"
+                        ,parameters("salonVa",salonVa)
+                );
+                
+                registro = resultado.next();
+                cont = registro.get("salon").asInt();
+                
+                if(cont > 0){
+                    ok = false;
+                }
+                
+            }catch(Neo4jException nfje){
+                System.out.println(nfje.getMessage());
+            }catch (NullPointerException npe){
+                System.out.println(npe.getMessage());
+                npe.printStackTrace();
+            }
+        } catch (SessionExpiredException see){
+            System.out.println(see.getMessage());
+        } catch (Neo4jException nfje){
+            System.out.println(nfje.getMessage());
+        } finally{
+             
+            //Cerrar la sesion
+            sesion.close();
+            
+            //Cierre la conexion
+            ConexionGBD.cerrarConexion();
+        }
+         
+        return ok;
+    }
+    // </editor-fold>
 }

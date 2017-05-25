@@ -245,6 +245,55 @@ public class ProfesorDAO{
     }
     // </editor-fold>
     
+    //MÉTODO PARA verificar Profesores
+    // <editor-fold defaultstate="collapsed" desc="Verificar Profesores">
+    public static boolean verificarProfesor(String nomProf){
+        boolean ok = true;
+        int cont = 0;
+        conexion = ConexionGBD.obtenerConexion();
+        
+        try {
+            sesion = conexion.session();
+            
+            try {
+                
+                //veriricacion del nodo a insertar
+                resultado = sesion.run("MATCH (p:Profesor) "
+                            + "WHERE p.profe CONTAINS {nombreProfVa}"
+                            +" RETURN count(p.profe) as profesores"
+                        ,parameters("nombreProfVA",nomProf)
+                );
+                
+                registro = resultado.next();
+                cont = registro.get("profesores").asInt();
+                
+                if(cont > 0){
+                    ok = false;
+                }
+                
+            }catch(Neo4jException nfje){
+                System.out.println(nfje.getMessage());
+            }catch (NullPointerException npe){
+                System.out.println(npe.getMessage());
+                npe.printStackTrace();
+            }
+        } catch (SessionExpiredException see){
+            System.out.println(see.getMessage());
+        } catch (Neo4jException nfje){
+            System.out.println(nfje.getMessage());
+        } finally{
+             
+            //Cerrar la sesion
+            sesion.close();
+            
+            //Cierre la conexion
+            ConexionGBD.cerrarConexion();
+        }
+         
+        return ok;
+    }
+    // </editor-fold>
+    
     // METODO PARA OBTENER EL NOMBRE DE LOS PROFESORES 
     // <editor-fold defaultstate="collapsed" desc="Obtener Nombre Profesores">
     public static ArrayList<String> obtenerNomProf(){
