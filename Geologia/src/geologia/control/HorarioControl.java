@@ -66,8 +66,6 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
     
     ValidadorH validador = new ValidadorH() {
         
-      
-        
         @Override
         public boolean validarHorario() {
             
@@ -135,7 +133,7 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
             String dias[] = obtenerDias().split("");
             boolean ok = true;
             for(int i=0;i<dias.length; i++) {
-             if(!ProfesorDAO.verificarProfesor((String)ventana.getCbProfesor().getSelectedItem())){
+             if(true){
                 ok = false;
                 }
             }
@@ -148,7 +146,7 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
             String dias[] = obtenerDias().split("");
             boolean ok = true;
             for(int i=0;i<dias.length; i++) {
-                if(!SalonDAO.verificarSalon((String)ventana.getCbSalon().getSelectedItem())){
+                if(true){
                 ok = false;
                 }
             }
