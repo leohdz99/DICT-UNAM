@@ -13,62 +13,26 @@ import java.awt.*;
 import javax.swing.*; 
 
 import geologia.control.LoginControl;
-import geologia.modelo.ConexionBD;
-
 
 
 public class LoginIGU extends JFrame{
 	
     // Componentes
-    private JFrame login; // Ventana de Login princial
-    private JLabel lbUsuario = new JLabel("Usuario:");
-    private JLabel lbPass = new JLabel("Contraseña:");
-    private JTextField txtUsuario = new JTextField(10);
-    private JPasswordField txtPass = new JPasswordField(10);
-    private JButton btnAceptar = new JButton("Aceptar");          
-    private LoginControl controlador = new LoginControl(this); 	// Objeto Por el cual se controlan los eventos;
+    private final JLabel lbUsuario = new JLabel("Usuario:");
+    private final JLabel lbPass = new JLabel("Contraseña:");
+    private final JTextField txtUsuario = new JTextField(10);
+    private final JPasswordField txtPass = new JPasswordField(10);
+    private final JButton btnAceptar = new JButton("Ingresar");
+    
+    //Control de la ventana
+    private final LoginControl controlador = new LoginControl(this);
 
     //Constructor
     public LoginIGU(){
-
-        btnAceptar.addActionListener(controlador);
-        this.getRootPane().setDefaultButton(btnAceptar);
-
-        agregarLogin();
-
-        controlador = new LoginControl(this);
-        setLayout(null);
-        add(lbUsuario);
-        lbUsuario.setBounds(50,20, 120, 40);
-        add(txtUsuario);
-        txtUsuario.setBounds(200, 20, 120, 30);
-        add(lbPass);
-        lbPass.setBounds(50,60, 120, 40);
-        add(txtPass);
-        txtPass.setBounds(200, 60, 120, 30);
-        add(btnAceptar);
-        btnAceptar.setBounds(150, 100, 100, 30);
-        setSize(400, 200);
-        setResizable(false);
-
-        Dimension dim = this.getToolkit().getScreenSize();	//obtiene tamaño pantalla
-        Rectangle rec = this.getBounds();					//crea rectángulo a partir de límites la ventana
-        this.setLocation((dim.width - rec.width) / 2, ((dim.height - rec.height) / 2) - 20);	//define posición
-
-        setTitle("División de Ingeniería en Ciencias de la Tierra");
-        Image icono = 
-                new ImageIcon(getClass().getResource("imagenes/icon.png")).getImage();
-        setIconImage(icono);
-        System.out.println("Directorio ejecucion = " + 
-                System.getProperty("user.dir"));
-        agregarMenu();
-        setVisible(true);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-    }
-
-    private void agregarLogin() {
-
-        login = new JFrame();
+        super();
+        agregarComp();
+        agregarCtrlGraf();
+        agregarCtrlGraf();
     }
     
     private void agregarMenu(){
@@ -101,6 +65,48 @@ public class LoginIGU extends JFrame{
         
         setJMenuBar(bmnPrincipal);
     }
+    
+    
+    
+    private void agregarComp(){
+        
+       
+        
+        setLayout(null);
+        
+        add(lbUsuario);
+        lbUsuario.setBounds(50,20, 120, 40);
+        add(txtUsuario);
+        txtUsuario.setBounds(200, 20, 120, 30);
+        add(lbPass);
+        lbPass.setBounds(50,60, 120, 40);
+        add(txtPass);
+        txtPass.setBounds(200, 60, 120, 30);
+        add(btnAceptar);
+        btnAceptar.setBounds(150, 100, 100, 30);
+        
+        setSize(400, 200);
+        setResizable(false);
+
+        Dimension dim = this.getToolkit().getScreenSize();	//obtiene tamaño pantalla
+        Rectangle rec = this.getBounds();					//crea rectángulo a partir de límites la ventana
+        this.setLocation((dim.width - rec.width) / 2, ((dim.height - rec.height) / 2) - 20);	//define posición
+
+        setTitle("División de Ingeniería en Ciencias de la Tierra");
+        Image icono = 
+                new ImageIcon(getClass().getResource("imagenes/icon.png")).getImage();
+        setIconImage(icono);
+        System.out.println("Directorio ejecucion = " + 
+                System.getProperty("user.dir"));
+        agregarMenu();
+        
+        setVisible(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+    
+    private void agregarCtrlGraf(){
+        btnAceptar.addActionListener(controlador);
+    }
 
     public JTextField getUsuario(){
         return txtUsuario;
@@ -115,9 +121,9 @@ public class LoginIGU extends JFrame{
     } 
     
     public void limpiar(){	
-		txtUsuario.setText("");
-                txtPass.setText("");//borra contenido
-		txtUsuario.requestFocus();	//asigna cursor
-	}
+	txtUsuario.setText("");
+        txtPass.setText("");//borra contenido
+        txtUsuario.requestFocus();	//asigna cursor
+    }
     
 }

@@ -25,10 +25,10 @@ public class LoginControl extends KeyAdapter implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		
 		switch(e.getActionCommand()){
-			case "Aceptar":  aceptar();	
+			case "Ingresar":  ingresar();	
                                           break;
                         case "Editar":  configuracion();
-                                            break;
+                                          break;
 		}
 	}
         
@@ -37,36 +37,14 @@ public class LoginControl extends KeyAdapter implements ActionListener{
            new ConfiguracionIGU();
         }
         
-	public void aceptar(){
+	public void ingresar(){
             if(login.getUsuario().getText().length() > 0 
-                    && login.getPass().getPassword().length > 0 ){
+                    || login.getPass().getPassword().length > 0 ){
                 if(LoginDAO.validarUsuario(login.getUsuario().getText(),
                         new String(login.getPass().getPassword()))){
-                    //boolean val = true;
-                    //while (val){
-                       // try {
-                           /* String sem = JOptionPane.showInputDialog(null, 
-                            "Semestre a Ingresar(Ejemplo 2000-1): ", 
-                            "Ingrese un semestre", 
-                            JOptionPane.INFORMATION_MESSAGE);
-
-                            if(!sem.matches("[0-9]{4}-[1-2]{1}")){
-                                int opt = JOptionPane.showConfirmDialog(login, "Desea Intentar de Nuevo",
-                                        "Semestre Incorrecto", JOptionPane.YES_NO_OPTION, 
-                                        JOptionPane.ERROR_MESSAGE);
-                                if (opt == JOptionPane.NO_OPTION) {
-                                    System.exit(0);
-                                }
-                            *///}else{
+  
                                 login.dispose();
                                 new MenuPrincipalIGU();
-                                //val = false;
-                            
-                        //} catch(NullPointerException npe) {
-                          //  System.exit(0);
-                        //}
-                        
-                    //}
                    
                 } else {
                     JOptionPane.showMessageDialog( null, 

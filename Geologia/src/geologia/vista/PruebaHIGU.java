@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class PruebaHIGU extends JInternalFrame {
+public final class PruebaHIGU extends JInternalFrame {
     
     //define un objeto de esta clase para que sólo exista un objeto de ella
     //(patrón singleton) para usar este objeto se crea el método getVentana()
