@@ -14,8 +14,6 @@ public class ConexionBD {
     private String URL_JDBC = "jdbc:mysql://"+ ipDir +"/dict";
     
     private static Connection conexion = null;
-    //private String usuarioBD;
-    //private String PassBD;
     
     //Constructor de la conexión a la BD
     private ConexionBD() {
@@ -39,7 +37,7 @@ public class ConexionBD {
         
     }
 
-    public static Connection getConexion() {
+    public static Connection obtenerConexion() {
         if (conexion == null) {
             new ConexionBD();
         }

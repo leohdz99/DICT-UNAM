@@ -49,7 +49,7 @@ public class ConHorarioIGU extends JInternalFrame{
          addBxVerticalPrincipal();//crea y agrega el panel principal con todos los componentes
 		
 		//setEventos();	//define la clase controladora para los componentes
-		setSize(800, 600);
+        setSize(800, 600);
                 show();
     }
     

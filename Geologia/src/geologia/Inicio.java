@@ -33,8 +33,6 @@ public class Inicio {
                     );
         }
        
-        EventQueue.invokeLater(() -> {
-            new LoginIGU();
-        });           
+        EventQueue.invokeLater(LoginIGU::new);           
     }
 }

@@ -130,7 +130,7 @@ public class GeneradorPDF extends javax.swing.JFrame {
        //ResultSet rsHorarios = HorarioDAO.obtenerHorarios(String salon, String nombreProf);
         
        try{
-			conexion = ConexionBD.getConexion();
+			conexion = ConexionBD.obtenerConexion();
 			orden = conexion.createStatement();
                         /*query = "SELECT concat(Horario.horaEntrada, ' - ', Horario.horaSalida) as Horario, Horario.grupo as Grupo, Horario.tipo as Tipo, salon.salon as Salon, salon.cupoSalon as Cupo, salon.vacanteSalon as Vacante, "+ 
                                 "D1.dias AS 'Dia 1', D2.dias AS 'Dia 2' , D3.dias AS 'Dia 3', Asignatura.claveAsignatura as Clave, Asignatura.nombreAsignatura as Asignatura, Profesor.folioProfesor as 'Folio Profesor', "+

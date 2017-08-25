@@ -37,7 +37,7 @@ public class LoginDAO {
         
         
         try {
-            conexion = ConexionBD.getConexion();
+            conexion = ConexionBD.obtenerConexion();
             procAlmacenado = conexion.prepareCall("{call validarUsuario(?, ?)}");
             
             procAlmacenado.setString(1, usr);
