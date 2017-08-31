@@ -106,6 +106,8 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
                 ok = false;
             }
             
+            
+            //valida el horario por cada uno de los dias ingresados
             for(int i=0;i<dias.length; i++) {
                 if(!HorarioDAO.verificarHorario(
                     dias[i], 
