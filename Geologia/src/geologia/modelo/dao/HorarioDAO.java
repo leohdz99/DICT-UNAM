@@ -20,7 +20,6 @@ import geologia.modelo.dto.Profesor;
 import geologia.modelo.dto.Salon;
 
 import java.util.ArrayList;
-import geologia.vista.PruebaHIGU;
 
 import org.neo4j.driver.v1.Driver;
 import org.neo4j.driver.v1.Record;
@@ -40,7 +39,7 @@ public class HorarioDAO{
     private static Record registro = null;
 
     
-    // METODO PARA INSERTAR UN NODO Horario
+    // METODO PARA INSERTAR UN NODO HORARIO
     // <editor-fold defaultstate="collapsed" desc="Insertar Horario">
     public static boolean insertar(Horario hr, Salon sln, 
             Asignatura asgn, Profesor prf){ 
@@ -112,7 +111,7 @@ public class HorarioDAO{
     }
     // </editor-fold> 
     
-    // METODO PARA MODIFICAR UN NODO Horario
+    // METODO PARA MODIFICAR UN NODO HORARIO
     // <editor-fold defaultstate="collapsed" desc="Modificar Profesor">
     public static boolean modificar(Horario hr,Horario hrM, Salon sln, 
             Asignatura asgn, Profesor prf){
@@ -132,16 +131,16 @@ public class HorarioDAO{
                 transact.run("MATCH (h:Horario)--(a:Asignatura), "
                             + "(s:Salon)--(h),"
                             + "(p:Profesor)--(h)"
-                            + "WHERE a.nomAsig CONTAINS {a}\n"
-                            + "AND s.salon CONTAINS ''\n"
-                            + "AND p.profe CONTAINS ''\n"
-                            + "AND h.grupo = 1\n"
-                            + "AND h.hrEnt = 9.00\n"
-                            + "AND h.hrSal = 11.00\n"
-                            + "AND h.dias = 6\n"
-                            + "SET h.hrEnt = 15.00,\n"
-                            + "h.hrSal = 19.00,\n"
-                            + "h.dias = 25"
+                            + "WHERE a.nomAsig CONTAINS {asign}\n"
+                            + "AND s.salon CONTAINS {salon}\n"
+                            + "AND p.profe CONTAINS {profe}\n"
+                            + "AND h.grupo = {grupo}\n"
+                            + "AND h.hrEnt = {hrEntrada}\n"
+                            + "AND h.hrSal = {hrSalida}\n"
+                            + "AND h.dias = {dias}\n"
+                            + "SET h.hrEnt = {hrEntradaM},\n"
+                            + "h.hrSal = {hrSalidaM},\n"
+                            + "h.dias = {diasM}"
                         ,parameters(
                                 "asign", asgn.getNomAsig(),
                                 "salon", sln.getSalon(),
@@ -153,7 +152,7 @@ public class HorarioDAO{
                                 "grpM", hrM.getGrupo(),
                                 "hrEntdaM", hrM.getHrEnt(),
                                 "hrSaldaM", hrM.getHrSal(),
-                                "dias", hrM.getDias()
+                                "diasM", hrM.getDias()
                         )
                 );
                 
@@ -189,7 +188,7 @@ public class HorarioDAO{
     }
     // </editor-fold> 
     
-    // METODO PARA FILTRAR UN Horario
+    // METODO PARA FILTRAR UN HORARIO
     // <editor-fold defaultstate="collapsed" desc="Filtrar Profesor">
     public static Object[][] filtrarHorario(String nombreProf){
         
@@ -278,10 +277,11 @@ public class HorarioDAO{
     // </editor-fold>
     
     // METODO PARA VALIDAR TRANSLAPES DE HORARIOS
-    // <editor-fold defaultstate="collapsed" desc="HORARIOS REPETIDOS">
+    // <editor-fold defaultstate="collapsed" desc="Validar Horarios Repretidos">
     
     public static boolean verificarHorario(String dia, String nomAsig, 
-            String nomP, String salonV, String grupo, double hEntrada, double hSalida){
+            String nomP, String salonV, String grupo, double hEntrada,
+            double hSalida){
         
         boolean ok = true;
         int cont = 0;
@@ -349,7 +349,7 @@ public class HorarioDAO{
     }
     // </editor-fold> 
     
-    // METODO PARA OBTENER EL NOMBRE DE LOS Horarios
+    // METODO PARA OBTENER EL NOMBRE DE LOS HORARIOS
     // <editor-fold defaultstate="collapsed" desc="Obtener Nombre Profesores">
     public static ArrayList<String> obtenerNomProf(){
         ArrayList<String> profesores = null;
@@ -396,7 +396,9 @@ public class HorarioDAO{
         return profesores;
     }
     // </editor-fold>       
-        
+     
+    //METODO PARA CONVERTIR LOS NUMEROS DE LOS DIAS A LETRAS
+    // <editor-fold defaultstate="collapsed" desc="Obtener Dias">
     public static String obtenerDias(String dias){
 
         String arregloDias[] = {};
@@ -431,12 +433,10 @@ public class HorarioDAO{
         }
         return diasTotales;
     }
+    // </editor-fold> 
     
-    
-
-
- // METODO PARA ELIMINAR HORARIO 
-    // <editor-fold defaultstate="collapsed" desc="ELIMINAR HORARIO">
+    // METODO PARA ELIMINAR HORARIO 
+    // <editor-fold defaultstate="collapsed" desc="Eliminar Horario">
     public static boolean eliminar(Horario hr,Horario hrM, Salon sln, 
             Asignatura asgn, Profesor prf){
         boolean esVerdadero = false;

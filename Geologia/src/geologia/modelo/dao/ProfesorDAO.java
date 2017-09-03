@@ -17,7 +17,6 @@
 
 package geologia.modelo.dao;
 
-import javax.swing.JOptionPane;
 import geologia.modelo.ConexionGBD;
 import geologia.modelo.dto.Profesor; 
 

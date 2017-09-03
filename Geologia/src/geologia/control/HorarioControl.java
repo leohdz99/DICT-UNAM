@@ -39,7 +39,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.JComboBox;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.JOptionPane;
@@ -73,7 +72,7 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
             String dias[] = obtenerDias().split("");
             //********************Horas***************************
             
-            //Validando que los campos no esten vacios 
+            //Validando que los campos de horas no esten vacios 
             if(ventana.getCbHrsE().getSelectedIndex() == 0 
                     || ventana.getCbHrsS().getSelectedIndex() == 0 
                     || ventana.getCbMinE().getSelectedIndex() == 0 
@@ -296,24 +295,29 @@ public class HorarioControl extends KeyAdapter implements ActionListener,
         return aux;
     }
     
-   public void buscarSalon(){
+    public void buscarSalon(){
         String salon = (String)ventana.getCbSalon().getSelectedItem();
         
         JTable tabla = ventana.getTbLista();
         
-                TableRowSorter<TableModel>srtSalones = new TableRowSorter<>(tabla.getModel());	
-				//crea sorter de tabla para el modelo de datos de tblLista
-		RowFilter<TableModel, Integer> modeloFiltro = null;	//declra filtro
-
-        try {
-        	modeloFiltro = RowFilter.regexFilter(salon,3);	
-        			//especifica el origen de los datos para el filtro (campo de texto de la barra de htas) 
-        } catch (java.util.regex.PatternSyntaxException e) {	//captura excepción de datos incorrectos
-        	return;												//y no hace nada solo regresa
-        }
+        //crea sorter de tabla para el modelo de datos de tblLista
+        TableRowSorter<TableModel>srtSalones = 
+                new TableRowSorter<>(tabla.getModel());	
+		
+	RowFilter<TableModel, Integer> modeloFiltro = null;
         
-		tabla.setRowSorter(srtSalones);				//especifica el objeto de ordenamiento de datos de la tabla
-                srtSalones.setRowFilter(modeloFiltro);			//especifica el filtro para el sorter
+        try {
+            
+            modeloFiltro = RowFilter.regexFilter(salon,3);	
+          
+        } catch (java.util.regex.PatternSyntaxException e) {
+            
+        	return;
+        
+        }
+     
+	tabla.setRowSorter(srtSalones);
+        srtSalones.setRowFilter(modeloFiltro);
     
 
       
